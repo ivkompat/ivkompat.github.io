@@ -134,10 +134,14 @@ table.data{width:100%;border-collapse:collapse;min-width:640px}
 .dsum{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 24px}
 
 /* Footer */
-.foot{background:#0b2238;color:#b9c7d6;margin-top:40px;padding-bottom:env(safe-area-inset-bottom,0px)}
-.foot .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.9rem}
-.foot nav a{color:#dbe6f1;text-decoration:none;margin-left:18px}
-.foot p{margin:0;max-width:62ch}
+.foot{background:#0b2238;color:#b9c7d6;padding-bottom:env(safe-area-inset-bottom,0px)}
+.foot-top{padding-block:36px 28px;display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;font-size:.92rem}
+.foot-nav{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:flex-start}
+.foot-nav a{color:#dbe6f1;text-decoration:none;font-weight:600}
+.foot-nav a:hover{color:#fff;text-decoration:underline}
+.foot p{margin:10px 0 0;max-width:56ch;line-height:1.6}
+.brand.light{color:#fff;font-size:1.05rem}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.12);padding-block:16px;font-size:.84rem;color:#93a6ba}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tile{transition:none}}
 
@@ -165,7 +169,6 @@ table.data{width:100%;border-collapse:collapse;min-width:640px}
   .vbody{grid-template-columns:1fr}
   .vpair,.vtype{grid-column:1}
   .vmore{grid-column:1;grid-row:auto}
-  .foot nav a{margin:0 18px 0 0}
 }
 .section[hidden] + .section{padding-top:44px}
 .btn-more{border:1px solid var(--brand);background:var(--surface);color:var(--brand);font-weight:700;padding:10px 22px;border-radius:8px;cursor:pointer}
@@ -239,3 +242,13 @@ table.data{width:100%;border-collapse:collapse;min-width:640px}
 .rep-row{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);text-align:right}
 .report{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:600;color:var(--muted);text-decoration:none}
 .report:hover{color:var(--bad)}
+
+/* Sticky footer + header polish */
+body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+main{flex:1 0 auto}
+.page{padding-bottom:72px}
+.nav{box-shadow:0 1px 0 rgba(15,35,60,.02)}
+.quick-light{justify-content:flex-start;margin:16px 0 0;max-width:none;color:var(--muted)}
+.quick-light button{border:1px solid var(--line);background:var(--surface);color:var(--brand);font-weight:600}
+.quick-light button:hover{background:var(--brand-tint);border-color:var(--brand)}
+@media (max-width:760px){.foot-top{flex-direction:column;gap:18px;padding-block:28px 20px}}

@@ -28,7 +28,7 @@ const T={
   checkedDate:"2 November 2026",otherFor:"Other entries for",openDrug:"Open drug page",
   S_C:"Compatible",S_I:"Incompatible",S_K:"Conditional",S_N:"Not established",S_D:"Conflicting data",SD_D:"Sources disagree. Check with the pharmacy before giving together.",
   SD_C:"The source lists this combination as compatible.",SD_I:"The source says not to mix, or warns of precipitation or loss of activity.",SD_K:"Depends on conditions such as concentration or product; see the details.",SD_N:"No compatibility information is available.",
-  foot:"IV Compat. Compiled from official drug labels, hospital compatibility charts, manufacturer testing and clinical research. Last checked 2 November 2026."},
+  foot:"A quick reference for IV drug compatibility, compiled from official drug labels, hospital compatibility charts, manufacturer testing and clinical research.",footNote2:"Data last checked 2 November 2026. Always confirm with your pharmacy before administration."},
  id:{navHome:"Beranda",navCheck:"Cek pasangan",navBrowse:"Semua data",navDrugs:"Obat A–Z",
   heroT:"Referensi kompatibilitas IV",
   heroP:"Pilih dua obat atau cairan IV untuk melihat apakah keduanya boleh dicampur, diencerkan, atau diberikan bersama. Setiap hasil menampilkan sumbernya.",
@@ -56,7 +56,7 @@ const T={
   checkedDate:"2 November 2026",otherFor:"Data lain untuk",openDrug:"Buka halaman obat",
   S_C:"Kompatibel",S_I:"Inkompatibel",S_K:"Bersyarat",S_N:"Belum terbukti",S_D:"Data bertentangan",SD_D:"Sumber saling bertentangan. Konfirmasi dengan farmasi sebelum diberikan bersama.",
   SD_C:"Sumber menyatakan kombinasi ini kompatibel.",SD_I:"Sumber melarang pencampuran, atau memperingatkan endapan atau hilangnya aktivitas.",SD_K:"Tergantung kondisi seperti konsentrasi atau produk; lihat detail.",SD_N:"Tidak ada informasi kompatibilitas.",
-  foot:"IV Compat. Disusun dari label obat resmi, bagan kompatibilitas rumah sakit, uji produsen, dan penelitian klinis. Terakhir diperiksa 2 November 2026."}
+  foot:"Referensi cepat kompatibilitas obat IV, disusun dari label obat resmi, bagan kompatibilitas rumah sakit, uji produsen, dan penelitian klinis.",footNote2:"Data terakhir diperiksa 2 November 2026. Selalu konfirmasi dengan farmasi sebelum pemberian."}
 };
 const TYPES=["Diluent","Y-site","Admixture","Syringe"],TK=x=>x.replace("-","");
 const N=window.NAMES,S=window.SOURCES;
@@ -191,8 +191,9 @@ const V={
   app.querySelectorAll(".tile").forEach(a=>a.onclick=()=>{bs={q:"",type:a.dataset.type,s:"all"}});
  },
  check(){
-  app.innerHTML=`<div class="wrap page"><h1>${t("checkT")}</h1><p class="sub">${t("checkP")}</p>${selectorHTML()}<div class="results" id="cres" style="margin-top:20px"></div></div>`;
+  app.innerHTML=`<div class="wrap page"><h1>${t("checkT")}</h1><p class="sub">${t("checkP")}</p>${selectorHTML()}<div class="quick quick-light"><span>${t("common")}</span>${QUICK.map(([a,b])=>`<button type="button" data-a="${a}" data-b="${b}">${esc(nm(a))} + ${esc(nm(b))}</button>`).join("")}</div><div class="results" id="cres" style="margin-top:20px"></div></div>`;
   bindSelector("cres");
+  app.querySelectorAll(".quick button").forEach(b=>b.onclick=()=>{combos.a.set(b.dataset.a);combos.b.set(b.dataset.b);pair={a:b.dataset.a,b:b.dataset.b};renderPair("cres")});
  },
  browse(){
   const opt=(list,cur)=>[["all",t("all")],...list].map(([v,l])=>`<option value="${v}"${v===cur?" selected":""}>${l}</option>`).join("");
