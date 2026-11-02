@@ -1,187 +1,223 @@
 (function(){
+"use strict";
 const T={
- en:{navHome:"Home",navCheck:"Pair checker",navBrowse:"Browse all",navDrugs:"Drugs A–Z",navAbout:"Sources & method",
-  heroEyebrow:"For nurses and pharmacists",heroTitle:"Check IV compatibility before you mix.",
-  heroLead:"Search drugs and IV fluids, or check two together. Every result links to the official label it came from.",
-  searchPh:"Search a drug, brand or fluid (e.g. ceftriaxone, NS, Zosyn)",searchBtn:"Search",tryLabel:"Try:",
-  statEntries:"verified entries",statDrugs:"drugs & fluids",statSources:"official sources",
-  heroCardT:"What's inside",heroCardP:"Drug + diluent, Y-site, same-bag admixture and syringe data from FDA labels and UK SmPCs.",
-  alert:"Reference only. A missing pair means “no data here”, not “compatible”. Always confirm with your pharmacist or a licensed reference (Trissel's, King Guide) before giving.",
-  typesT:"Browse by type",typesL:"Four ways drugs meet in IV therapy. Pick one to see every verified entry.",
-  t_Diluent:"Drug + diluent",t_Ysite:"Y-site",t_Admixture:"Admixture (same bag)",t_Syringe:"Syringe",
-  d_Diluent:"Which fluid to reconstitute or dilute in.",d_Ysite:"Two infusions meeting at the same line.",d_Admixture:"Two drugs mixed in one bag.",d_Syringe:"Two drugs drawn into one syringe.",
-  entries:"entries",checkT:"Pair checker",checkL:"Pick two drugs or fluids to see what the label says about giving them together.",
-  drugA:"Drug or fluid A",drugB:"Drug or fluid B",check:"Check",pickPh:"Start typing…",
-  noPair:"<b>No verified data for this pair.</b> That does not mean they are compatible. Check Trissel's, King Guide, or ask your pharmacist.",
-  needTwo:"Choose two items to check.",
-  dangerT:"High-risk incompatibilities",dangerL:"Combinations the labels warn against most strongly.",
-  browseT:"Browse all entries",browseL:"Filter by type and result, or search in any language.",
-  filterType:"Type",filterRes:"Result",all:"All",showing:"Showing {n} of {t}",
-  noRes:"<b>No verified entry for this search.</b> That does not mean compatible. Check a licensed reference or ask your pharmacist.",
-  drugsT:"Drugs & fluids A–Z",drugsL:"Open any item to see everything we have verified for it.",
-  back:"← All drugs",aka:"Also known as",nothing:"No entries.",
-  source:"Source",S_C:"Compatible",S_I:"Incompatible",S_K:"Conditional",S_N:"Not established",
-  SD_C:"The label lists this combination as compatible.",SD_I:"The label says do not mix, or warns of precipitation or inactivation.",SD_K:"Allowed only under the specific conditions stated in the label.",SD_N:"The label says compatibility has not been tested or established.",
-  aboutT:"Sources & method",
-  aboutP1:"Every entry on this site was checked on 2 November 2026 against official prescribing information: US FDA labels (DailyMed and manufacturer sites), UK SmPCs (emc), the UK MHRA, and manufacturer medical information. Anything we could not trace to one of these sources was left out.",
-  aboutP2:"Rules can differ between brands and generics of the same drug. Piperacillin-tazobactam is a well-known example. Always check the label of the product you are holding, and the concentration you are using.",
-  aboutP3:"This site is not a substitute for a licensed compatibility reference or a pharmacist. Coverage is intentionally small so that every line is checkable.",
-  legendT:"What the results mean",srcT:"All sources",
-  footNote:"Free reference for IV compatibility, built from official drug labels. Not medical advice; confirm with a pharmacist before administration.",
-  footVerified:"Data verified 2 Nov 2026 · 46 entries · EN / ID"},
- id:{navHome:"Beranda",navCheck:"Cek pasangan",navBrowse:"Semua data",navDrugs:"Obat A–Z",navAbout:"Sumber & metode",
-  heroEyebrow:"Untuk perawat dan apoteker",heroTitle:"Cek kompatibilitas IV sebelum mencampur.",
-  heroLead:"Cari obat dan cairan IV, atau cek dua sekaligus. Setiap hasil ditautkan ke label resmi sumbernya.",
-  searchPh:"Cari obat, merek, atau cairan (mis. seftriakson, NaCl, Zosyn)",searchBtn:"Cari",tryLabel:"Coba:",
-  statEntries:"data terverifikasi",statDrugs:"obat & cairan",statSources:"sumber resmi",
-  heroCardT:"Isi situs",heroCardP:"Data obat + pelarut, Y-site, campuran dalam satu kantong, dan spuit dari label FDA dan SmPC Inggris.",
-  alert:"Hanya sebagai referensi. Pasangan yang tidak ada berarti “tidak ada data”, bukan “kompatibel”. Selalu konfirmasi dengan apoteker atau referensi berlisensi (Trissel's, King Guide) sebelum memberikan obat.",
-  typesT:"Telusuri berdasarkan jenis",typesL:"Empat cara obat bertemu dalam terapi IV. Pilih salah satu untuk melihat semua data terverifikasi.",
-  t_Diluent:"Obat + pelarut",t_Ysite:"Y-site",t_Admixture:"Campuran (satu kantong)",t_Syringe:"Spuit",
-  d_Diluent:"Cairan untuk rekonstitusi atau pengenceran.",d_Ysite:"Dua infus bertemu di satu jalur.",d_Admixture:"Dua obat dicampur dalam satu kantong.",d_Syringe:"Dua obat ditarik ke dalam satu spuit.",
-  entries:"data",checkT:"Cek pasangan",checkL:"Pilih dua obat atau cairan untuk melihat apa kata label tentang pemberian bersama.",
-  drugA:"Obat atau cairan A",drugB:"Obat atau cairan B",check:"Cek",pickPh:"Mulai ketik…",
-  noPair:"<b>Tidak ada data terverifikasi untuk pasangan ini.</b> Bukan berarti kompatibel. Periksa Trissel's, King Guide, atau tanyakan apoteker.",
-  needTwo:"Pilih dua item untuk dicek.",
-  dangerT:"Inkompatibilitas berisiko tinggi",dangerL:"Kombinasi yang paling keras diperingatkan oleh label.",
-  browseT:"Semua data",browseL:"Saring menurut jenis dan hasil, atau cari dalam bahasa apa pun.",
-  filterType:"Jenis",filterRes:"Hasil",all:"Semua",showing:"Menampilkan {n} dari {t}",
-  noRes:"<b>Tidak ada data terverifikasi untuk pencarian ini.</b> Bukan berarti kompatibel. Periksa referensi berlisensi atau tanyakan apoteker.",
-  drugsT:"Obat & cairan A–Z",drugsL:"Buka item mana pun untuk melihat semua data terverifikasinya.",
-  back:"← Semua obat",aka:"Nama lain",nothing:"Tidak ada data.",
-  source:"Sumber",S_C:"Kompatibel",S_I:"Inkompatibel",S_K:"Bersyarat",S_N:"Belum terbukti",
-  SD_C:"Label menyatakan kombinasi ini kompatibel.",SD_I:"Label melarang pencampuran, atau memperingatkan endapan atau inaktivasi.",SD_K:"Hanya boleh dengan syarat khusus yang tertulis di label.",SD_N:"Label menyatakan kompatibilitas belum diuji atau belum terbukti.",
-  aboutT:"Sumber & metode",
-  aboutP1:"Setiap data di situs ini telah diperiksa pada 2 November 2026 terhadap informasi resep resmi: label FDA AS (DailyMed dan situs produsen), SmPC Inggris (emc), MHRA Inggris, dan informasi medis produsen. Data yang tidak dapat ditelusuri ke sumber tersebut tidak dimasukkan.",
-  aboutP2:"Aturan dapat berbeda antara merek dan generik dari obat yang sama, contohnya piperasilin-tazobaktam. Selalu periksa label produk yang Anda pegang dan konsentrasi yang digunakan.",
-  aboutP3:"Situs ini bukan pengganti referensi kompatibilitas berlisensi atau apoteker. Cakupan sengaja dibuat kecil agar setiap baris dapat diverifikasi.",
-  legendT:"Arti hasil",srcT:"Semua sumber",
-  footNote:"Referensi gratis kompatibilitas IV, disusun dari label obat resmi. Bukan nasihat medis; konfirmasi dengan apoteker sebelum pemberian.",
-  footVerified:"Data diverifikasi 2 Nov 2026 · 46 data · EN / ID"}
+ en:{navHome:"Home",navCheck:"Pair checker",navBrowse:"Browse all",navDrugs:"Drugs A–Z",
+  heroT:"IV compatibility, checked against the label",
+  heroP:"Choose two drugs or IV fluids to see whether they can be mixed, diluted or run together.",
+  first:"First drug or fluid",second:"Second drug or fluid",choose:"Select…",
+  gDrugs:"Drugs",gFluids:"IV fluids",swap:"Swap",clear:"Clear",
+  pickBoth:"Select two items to see the result.",
+  direct:"Result for this pair",general:"General rules for these drugs",
+  noPairT:"No data for this pair",noPairP:"This combination is not in the database yet. Check with your pharmacy before mixing.",
+  details:"Full details",source:"Source",sources:"Sources",
+  statE:"checked entries",statD:"drugs and fluids",statS:"official sources",
+  typesT:"Browse by type",typesP:"See every entry for one way of giving drugs together.",
+  keyT:"Key incompatibilities",keyP:"Combinations that cause precipitation or loss of activity.",
+  t_Diluent:"Drug + diluent",t_Ysite:"Y-site",t_Admixture:"Same bag",t_Syringe:"Same syringe",
+  d_Diluent:"Which fluid to reconstitute or dilute in.",d_Ysite:"Two infusions meeting in one line.",d_Admixture:"Two drugs mixed in one bag.",d_Syringe:"Two drugs drawn up in one syringe.",
+  entries:"entries",
+  checkT:"Pair checker",checkP:"Select two drugs or fluids. Results come from the official prescribing information.",
+  browseT:"Browse all entries",browseP:"Search any drug, brand or fluid in English or Indonesian. Select a row to see full details.",
+  search:"Search",searchPh:"e.g. ceftriaxone, NaCl, Zosyn",typeL:"Type",resL:"Result",all:"All",
+  count:"{n} of {t} entries",noRes:"No entries match this search.",
+  colRes:"Result",colPair:"Combination",colType:"Type",colNote:"Label statement",
+  drugsT:"Drugs and fluids A–Z",drugsP:"Select a drug to see every combination checked for it.",
+  filterPh:"Filter by name",colName:"Name",colAlt:"Indonesian name",colN:"Entries",colI:"Incompatible",colC:"Compatible",
+  combined:"Combined with",aka:"Also searched as",
+  home:"Home",about:"About this entry",type:"Type",result:"Result",checked:"Last checked",
+  checkedDate:"2 November 2026",otherFor:"Other entries for",openDrug:"Open drug page",
+  S_C:"Compatible",S_I:"Incompatible",S_K:"Conditional",S_N:"Not established",
+  SD_C:"The label lists this combination as compatible.",SD_I:"The label says not to mix, or warns of precipitation or loss of activity.",SD_K:"Allowed only under the conditions stated in the label.",SD_N:"The label says compatibility has not been established.",
+  foot:"IV Compat. Compiled from official prescribing information (US FDA labels, UK SmPC, MHRA). Last checked 2 November 2026."},
+ id:{navHome:"Beranda",navCheck:"Cek pasangan",navBrowse:"Semua data",navDrugs:"Obat A–Z",
+  heroT:"Kompatibilitas IV, diperiksa sesuai label",
+  heroP:"Pilih dua obat atau cairan IV untuk melihat apakah keduanya boleh dicampur, diencerkan, atau diberikan bersama.",
+  first:"Obat atau cairan pertama",second:"Obat atau cairan kedua",choose:"Pilih…",
+  gDrugs:"Obat",gFluids:"Cairan IV",swap:"Tukar",clear:"Hapus",
+  pickBoth:"Pilih dua item untuk melihat hasil.",
+  direct:"Hasil untuk pasangan ini",general:"Aturan umum untuk obat ini",
+  noPairT:"Tidak ada data untuk pasangan ini",noPairP:"Kombinasi ini belum ada di database. Konfirmasi dengan farmasi sebelum mencampur.",
+  details:"Detail lengkap",source:"Sumber",sources:"Sumber",
+  statE:"data terperiksa",statD:"obat dan cairan",statS:"sumber resmi",
+  typesT:"Telusuri berdasarkan jenis",typesP:"Lihat semua data untuk satu cara pemberian obat bersama.",
+  keyT:"Inkompatibilitas utama",keyP:"Kombinasi yang menyebabkan endapan atau hilangnya aktivitas obat.",
+  t_Diluent:"Obat + pelarut",t_Ysite:"Y-site",t_Admixture:"Satu kantong",t_Syringe:"Satu spuit",
+  d_Diluent:"Cairan untuk rekonstitusi atau pengenceran.",d_Ysite:"Dua infus bertemu di satu jalur.",d_Admixture:"Dua obat dicampur dalam satu kantong.",d_Syringe:"Dua obat ditarik ke satu spuit.",
+  entries:"data",
+  checkT:"Cek pasangan",checkP:"Pilih dua obat atau cairan. Hasil berasal dari informasi resep resmi.",
+  browseT:"Semua data",browseP:"Cari obat, merek, atau cairan dalam bahasa Inggris atau Indonesia. Pilih baris untuk melihat detail.",
+  search:"Cari",searchPh:"mis. seftriakson, NaCl, Zosyn",typeL:"Jenis",resL:"Hasil",all:"Semua",
+  count:"{n} dari {t} data",noRes:"Tidak ada data yang cocok.",
+  colRes:"Hasil",colPair:"Kombinasi",colType:"Jenis",colNote:"Isi label",
+  drugsT:"Obat dan cairan A–Z",drugsP:"Pilih obat untuk melihat semua kombinasi yang sudah diperiksa.",
+  filterPh:"Saring nama",colName:"Nama",colAlt:"Nama Inggris",colN:"Data",colI:"Inkompatibel",colC:"Kompatibel",
+  combined:"Dikombinasikan dengan",aka:"Juga dicari sebagai",
+  home:"Beranda",about:"Tentang data ini",type:"Jenis",result:"Hasil",checked:"Terakhir diperiksa",
+  checkedDate:"2 November 2026",otherFor:"Data lain untuk",openDrug:"Buka halaman obat",
+  S_C:"Kompatibel",S_I:"Inkompatibel",S_K:"Bersyarat",S_N:"Belum terbukti",
+  SD_C:"Label menyatakan kombinasi ini kompatibel.",SD_I:"Label melarang pencampuran, atau memperingatkan endapan atau hilangnya aktivitas.",SD_K:"Hanya boleh dengan syarat yang tertulis di label.",SD_N:"Label menyatakan kompatibilitas belum terbukti.",
+  foot:"IV Compat. Disusun dari informasi resep resmi (label FDA AS, SmPC Inggris, MHRA). Terakhir diperiksa 2 November 2026."}
 };
-const TYPES=["Diluent","Y-site","Admixture","Syringe"];
-const TK=t=>t.replace("-","");
-const ICON={Diluent:'<path d="M8 3h8M9 3v6l-4 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-4-9V3"/>',"Y-site":'<path d="M6 3v6a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3M12 15v6"/>',Admixture:'<rect x="6" y="3" width="12" height="15" rx="3"/><path d="M6 10h12M12 18v3"/>',Syringe:'<path d="M18 2l4 4M15 5l4 4M3 21l4-4M7 17l9-9-3-3-9 9 3 3zM10 8l2 2"/>'};
-const svg=p=>`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const TYPES=["Diluent","Y-site","Admixture","Syringe"],TK=x=>x.replace("-","");
 const N=window.NAMES,S=window.SOURCES;
-const rows=window.ROWS.map(([type,a,b,s,src,en,id],i)=>({i,type,a,b,s,src,en,id,hay:(N[a].join(" ")+" "+N[b].join(" ")+" "+type).toLowerCase()}));
-let lang="en";try{lang=localStorage.getItem("ivlang")||(navigator.language||"").toLowerCase().startsWith("id")&&"id"||"en"}catch(e){}
-const t=k=>T[lang][k]||k;
-const nm=k=>lang==="id"?N[k][1]:N[k][0];
+const rows=window.ROWS.map(([type,a,b,s,src,en,id],i)=>({i,type,a,b,s,src,en,id,hay:(N[a].slice(0,3).join(" ")+" "+N[b].slice(0,3).join(" ")).toLowerCase()}));
+// Keys that also count as a broader item in the pair checker
+const GR={chloride:["ns"],dexAll:["d5w"],d5_20:["d5w"],caDil:["lr","caSol"],caIV:["caSol"],ambisome:["amphoB"],tobra:["aminog"],amigent:["aminog"],
+  ceftri:["betalact"],piptazo:["betalact"],mero:["betalact"],erta:["betalact"]};
+const ov=(rowKey,sel)=>rowKey===sel||(GR[rowKey]||[]).includes(sel)||(GR[sel]||[]).includes(rowKey);
+const GENERAL=["anyDrug","anyPN","anyLine"];
+const FLUIDS=["ns","d5w","lr","caSol"];
+const ICON={Diluent:'<path d="M8 3h8M9 3v6l-4 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-4-9V3"/>',"Y-site":'<path d="M6 3v6a6 6 0 0 0 12 0V3M12 15v6"/>',Admixture:'<rect x="6" y="3" width="12" height="15" rx="3"/><path d="M6 10h12M12 18v3"/>',Syringe:'<path d="M18 2l4 4M15 5l4 4M3 21l4-4M7 17l9-9-3-3-9 9 3 3z"/>'};
+const svg=(p,s=22)=>`<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const SYMI={C:'<path d="M5 12l5 5L20 7"/>',I:'<path d="M6 6l12 12M18 6L6 18"/>',K:'<path d="M12 7v6M12 17h.01"/>',N:'<path d="M9 9a3 3 0 1 1 4 2.8c-.7.3-1 1-1 1.7v.5M12 17h.01"/>'};
+
+let lang="en";try{lang=localStorage.getItem("ivlang")||((navigator.language||"").toLowerCase().startsWith("id")?"id":"en")}catch(e){}
+const t=k=>T[lang][k]??k, nm=k=>lang==="id"?N[k][1]:N[k][0], other=k=>lang==="id"?N[k][0]:N[k][1];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const note=r=>lang==="id"?r.id:r.en;
 const app=document.getElementById("app");
-let browseState={q:"",type:"all",s:"all"};
+let pair={a:"",b:""};
+let bs={q:"",type:"all",s:"all"};
 
-function card(r){
-  return `<article class="res s-${r.s}"><span class="pill p-${r.s}">${t("S_"+r.s)}</span><div>
-  <div class="pair"><a href="#drug-${r.a}">${esc(nm(r.a))}</a><span class="x">+</span>${N[r.b][3]==="other"?esc(nm(r.b)):`<a href="#drug-${r.b}">${esc(nm(r.b))}</a>`}<span class="tag">${t("t_"+TK(r.type))}</span></div>
-  <p class="note">${esc(lang==="id"?r.id:r.en)}</p>
-  <div class="src">${t("source")}: ${r.src.map(k=>`<a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a>`).join(" · ")}</div></div></article>`;
+const pill=s=>`<span class="pill ${s}">${svg(SYMI[s],13)}${t("S_"+s)}</span>`;
+const srcLinks=r=>r.src.map(k=>`<a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a>`).join("; ");
+function verdict(r){
+  return `<article class="verdict"><div class="vband ${r.s}">${svg(SYMI[r.s],20)}${t("S_"+r.s)}</div>
+  <div class="vbody"><p class="vpair">${esc(nm(r.a))} + ${esc(nm(r.b))}</p><a class="vmore" href="#e-${r.i}">${t("details")}</a>
+  <p class="vtype">${t("t_"+TK(r.type))}: ${t("d_"+TK(r.type))}</p>
+  <p class="vnote">${esc(note(r))}</p><div class="vsrc">${t("source")}: ${srcLinks(r)}</div></div></article>`;
 }
-function tokens(q){return q.toLowerCase().split(/[\s,+/]+|\band\b|\bdan\b|\bwith\b|\bdengan\b|\bvs\b/).map(x=>x.trim()).filter(x=>x.length>1)}
-function search(q,type,s){const tk=tokens(q);return rows.filter(r=>(type==="all"||r.type===type)&&(s==="all"||r.s===s)&&tk.every(x=>r.hay.includes(x)))}
-const alertHTML=`<div class="alert">${svg('<path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5M12 18h.01"/>')}<span>${t("alert")}</span></div>`;
+function rowsTable(list,{hideA,match}={}){
+  return `<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colRes")}</th><th>${hideA?t("combined"):t("colPair")}</th><th>${t("colType")}</th><th>${t("colNote")}</th><th></th></tr></thead><tbody>${
+   list.length?list.map(r=>{const otherK=hideA?((match?ov(r.a,hideA):r.a===hideA)?r.b:r.a):null;
+    return `<tr data-go="e-${r.i}"><td>${pill(r.s)}</td><td class="p">${hideA?esc(nm(otherK)):`${esc(nm(r.a))}<span class="x">+</span>${esc(nm(r.b))}`}</td><td class="m">${t("t_"+TK(r.type))}</td><td class="note">${esc(note(r))}</td><td class="chev">›</td></tr>`}).join("")
+   :`<tr class="empty-row"><td colspan="5">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;
+}
+function bindRows(root=app){root.querySelectorAll("tr[data-go]").forEach(tr=>tr.onclick=e=>{if(e.target.closest("a"))return;location.hash=tr.dataset.go})}
 
-function picker(id,ph){return `<div class="field"><label for="${id}">${ph}</label><input id="${id}" autocomplete="off" placeholder="${t("pickPh")}"><div class="sug" id="${id}-s" hidden></div></div>`}
-function bindPicker(id){
-  const inp=document.getElementById(id),box=document.getElementById(id+"-s");
-  const keys=Object.keys(N);
-  const show=()=>{const q=inp.value.toLowerCase().trim();
-    const m=keys.filter(k=>!q||N[k].join(" ").toLowerCase().includes(q)).sort((a,b)=>nm(a).localeCompare(nm(b))).slice(0,12);
-    box.innerHTML=m.map(k=>`<button type="button" data-k="${k}">${esc(nm(k))}</button>`).join("");box.hidden=!m.length};
-  inp.addEventListener("focus",show);inp.addEventListener("input",()=>{inp.dataset.k="";show()});
-  box.addEventListener("mousedown",e=>{const b=e.target.closest("button");if(!b)return;e.preventDefault();inp.value=nm(b.dataset.k);inp.dataset.k=b.dataset.k;box.hidden=true;runCheck()});
-  inp.addEventListener("blur",()=>setTimeout(()=>box.hidden=true,120));
+/* ---------- Pair checker ---------- */
+function options(sel){
+  const drugs=Object.keys(N).filter(k=>N[k][3]==="drug").sort((a,b)=>nm(a).localeCompare(nm(b)));
+  const o=k=>`<option value="${k}"${k===sel?" selected":""}>${esc(nm(k))}</option>`;
+  return `<option value="">${t("choose")}</option><optgroup label="${t("gFluids")}">${FLUIDS.map(o).join("")}</optgroup><optgroup label="${t("gDrugs")}">${drugs.map(o).join("")}</optgroup>`;
 }
-function resolve(inp){if(inp.dataset.k)return inp.dataset.k;const q=inp.value.toLowerCase().trim();if(!q)return"";const k=Object.keys(N).find(k=>N[k].join(" ").toLowerCase().split(/\s+/).includes(q)||nm(k).toLowerCase()===q)||Object.keys(N).find(k=>N[k].join(" ").toLowerCase().includes(q));return k||""}
-function runCheck(){
-  const a=document.getElementById("pa"),b=document.getElementById("pb"),out=document.getElementById("verdict");if(!a)return;
-  const ka=resolve(a),kb=resolve(b);
-  if(!ka||!kb){out.innerHTML=`<div class="empty">${t("needTwo")}</div>`;return}
-  const GR={chloride:["ns"],dexAll:["d5w"],d5_20:["d5w"],caDil:["lr","caSol"],caIV:["caSol"],ambisome:["amphoB"],tobra:["aminog"],amigent:["aminog"]};
-  const g=k=>[k,...(GR[k]||[])],ov=(x,y)=>g(x).some(v=>g(y).includes(v));
-  const hit=rows.filter(r=>(ov(r.a,ka)&&ov(r.b,kb))||(ov(r.a,kb)&&ov(r.b,ka)));
-  out.innerHTML=hit.length?hit.map(card).join(""):`<div class="empty">${t("noPair")}</div>`;
+function selectorHTML(){
+  return `<div class="selector"><div class="row">
+   <div class="fld"><label for="sa">${t("first")}</label><select id="sa">${options(pair.a)}</select></div>
+   <button class="swap" id="sw" type="button" aria-label="${t("swap")}" title="${t("swap")}">${svg('<path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>',20)}</button>
+   <div class="fld"><label for="sb">${t("second")}</label><select id="sb">${options(pair.b)}</select></div></div>
+   <div class="sel-foot"><span id="sel-hint">${t("pickBoth")}</span><button type="button" id="sclr">${t("clear")}</button></div></div>`;
 }
-function checkerHTML(){return `<div class="checker"><div class="pairin">${picker("pa",t("drugA"))}<span class="plus">+</span>${picker("pb",t("drugB"))}<button class="btn" id="pgo">${t("check")}</button></div><div class="verdict" id="verdict"></div></div>`}
-function bindChecker(pre){bindPicker("pa");bindPicker("pb");document.getElementById("pgo").onclick=runCheck;
-  if(pre){const a=document.getElementById("pa"),b=document.getElementById("pb");a.value=nm(pre[0]);a.dataset.k=pre[0];b.value=nm(pre[1]);b.dataset.k=pre[1];runCheck()}}
+function bindSelector(out){
+  const sa=document.getElementById("sa"),sb=document.getElementById("sb");
+  const run=()=>{pair={a:sa.value,b:sb.value};renderPair(out)};
+  sa.onchange=run;sb.onchange=run;
+  document.getElementById("sw").onclick=()=>{[sa.value,sb.value]=[sb.value,sa.value];run()};
+  document.getElementById("sclr").onclick=()=>{sa.value="";sb.value="";run()};
+  renderPair(out);
+}
+function lookup(a,b){
+  const direct=rows.filter(r=>(ov(r.a,a)&&ov(r.b,b))||(ov(r.a,b)&&ov(r.b,a)));
+  const general=rows.filter(r=>GENERAL.includes(r.b)&&(r.a===a||r.a===b)&&!direct.includes(r));
+  return {direct,general};
+}
+function renderPair(out){
+  const el=document.getElementById(out),hint=document.getElementById("sel-hint");
+  const sec=document.getElementById("hsec");
+  if(!pair.a||!pair.b||pair.a===pair.b){el.innerHTML="";hint.textContent=t("pickBoth");if(sec)sec.hidden=true;return}
+  if(sec)sec.hidden=false;
+  hint.textContent=`${nm(pair.a)} + ${nm(pair.b)}`;
+  const {direct,general}=lookup(pair.a,pair.b);
+  let h=`<p class="rgroup">${t("direct")}</p>`;
+  h+=direct.length?direct.map(verdict).join(""):`<div class="nodata"><b>${t("noPairT")}</b>${t("noPairP")}</div>`;
+  if(general.length)h+=`<p class="rgroup">${t("general")}</p>`+general.map(verdict).join("");
+  el.innerHTML=h;
+}
 
-const views={
+/* ---------- Views ---------- */
+const V={
  home(){
-  const items=Object.keys(N).length,srcs=Object.keys(S).length;
-  const danger=[10,1,7,4,22,17].map(i=>rows[i]);
-  app.innerHTML=`<div class="view">
-  <section class="hero"><div class="sec">
-   <div><p class="eyebrow">${t("heroEyebrow")}</p><h1>${t("heroTitle")}</h1><p>${t("heroLead")}</p>
-    <form class="hero-search" id="hs"><input id="hq" type="search" placeholder="${t("searchPh")}" aria-label="${t("searchBtn")}"><button class="btn">${svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>')}${t("searchBtn")}</button></form>
-    <div class="quick">${t("tryLabel")} ${["ceftriaxone calcium","phenytoin","NS","ketorolac","Zosyn"].map(q=>`<button type="button" data-q="${q}">${q}</button>`).join("")}</div></div>
-   <div class="hero-card"><h3>${t("heroCardT")}</h3><p>${t("heroCardP")}</p>
-    <div class="stats"><div class="stat"><b>${rows.length}</b><span>${t("statEntries")}</span></div><div class="stat"><b>${items}</b><span>${t("statDrugs")}</span></div><div class="stat"><b>${srcs}</b><span>${t("statSources")}</span></div></div></div>
-  </div></section>
-  <section class="sec"><p class="eyebrow">${t("navCheck")}</p><h2>${t("checkT")}</h2><p class="lead">${t("checkL")}</p>${checkerHTML()}</section>
-  <section class="sec" style="padding-top:0"><h2>${t("typesT")}</h2><p class="lead">${t("typesL")}</p>
-   <div class="grid4">${TYPES.map(ty=>`<a class="tcard" href="#browse" data-type="${ty}"><span class="ic">${svg(ICON[ty])}</span><h3>${t("t_"+TK(ty))}</h3><p>${t("d_"+TK(ty))}</p><span class="n">${rows.filter(r=>r.type===ty).length} ${t("entries")}</span></a>`).join("")}</div></section>
-  <section class="sec" style="padding-top:0"><h2>${t("dangerT")}</h2><p class="lead">${t("dangerL")}</p><div class="list">${danger.map(card).join("")}</div></section></div>`;
-  document.getElementById("hs").onsubmit=e=>{e.preventDefault();browseState={q:document.getElementById("hq").value,type:"all",s:"all"};go("browse")};
-  app.querySelectorAll(".quick button").forEach(b=>b.onclick=()=>{browseState={q:b.dataset.q,type:"all",s:"all"};go("browse")});
-  app.querySelectorAll(".tcard").forEach(a=>a.onclick=()=>{browseState={q:"",type:a.dataset.type,s:"all"}});
-  bindChecker(["ceftri","caIV"]);
+  const drugs=Object.keys(N).filter(k=>N[k][3]==="drug"||FLUIDS.includes(k)).length;
+  const keyRows=rows.filter(r=>r.s==="I"&&["ceftri","phenytoin","oxali","ambisome","filg","piptazo","levo","vanco"].includes(r.a)&&!GENERAL.includes(r.b));
+  const pick=[];["ceftri","phenytoin","oxali","ambisome","piptazo","vanco","levo","filg"].forEach(a=>{const r=keyRows.find(x=>x.a===a);if(r)pick.push(r)});
+  app.innerHTML=`<section class="hero"><div class="wrap"><h1>${t("heroT")}</h1><p>${t("heroP")}</p>${selectorHTML()}</div></section>
+  <div class="wrap"><section class="section" id="hsec" hidden><div class="results" id="hres"></div></section>
+  <section class="section"><div class="stats"><div class="stat"><b>${rows.length}</b><span>${t("statE")}</span></div><div class="stat"><b>${drugs}</b><span>${t("statD")}</span></div><div class="stat"><b>${Object.keys(S).length}</b><span>${t("statS")}</span></div></div></section>
+  <section class="section"><h2>${t("typesT")}</h2><p class="sub">${t("typesP")}</p><div class="tiles">${TYPES.map(ty=>`<a class="tile" href="#browse" data-type="${ty}"><span class="ic">${svg(ICON[ty])}</span><h3>${t("t_"+TK(ty))}</h3><p>${t("d_"+TK(ty))}</p><span class="n">${rows.filter(r=>r.type===ty).length} ${t("entries")}</span></a>`).join("")}</div></section>
+  <section class="section"><h2>${t("keyT")}</h2><p class="sub">${t("keyP")}</p>${rowsTable(pick)}</section></div>`;
+  bindSelector("hres");bindRows();
+  app.querySelectorAll(".tile").forEach(a=>a.onclick=()=>{bs={q:"",type:a.dataset.type,s:"all"}});
  },
- check(){app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navCheck")}</p><h2>${t("checkT")}</h2><p class="lead">${t("checkL")}</p>${checkerHTML()}</section></div>`;bindChecker()},
+ check(){
+  app.innerHTML=`<div class="wrap page"><h1>${t("checkT")}</h1><p class="sub">${t("checkP")}</p>${selectorHTML()}<div class="results" id="cres" style="margin-top:20px"></div></div>`;
+  bindSelector("cres");
+ },
  browse(){
-  const opts=(name,list,cur)=>[["all",t("all")],...list].map(([v,l])=>`<label class="opt"><input type="radio" name="${name}" value="${v}" ${cur===v?"checked":""}> ${l}<span class="c" data-c="${name}:${v}"></span></label>`).join("");
-  app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navBrowse")}</p><h2>${t("browseT")}</h2><p class="lead">${t("browseL")}</p>
-  <div class="browse"><aside class="side"><div><h4>${t("filterType")}</h4>${opts("ft",TYPES.map(x=>[x,t("t_"+TK(x))]),browseState.type)}</div><div><h4>${t("filterRes")}</h4>${opts("fs",["I","C","K","N"].map(x=>[x,t("S_"+x)]),browseState.s)}</div></aside>
-  <div class="list"><div class="bar"><input id="bq" type="search" placeholder="${t("searchPh")}" value="${esc(browseState.q)}"><span class="count" id="bc"></span></div><div class="list" id="bl"></div></div></div></section></div>`;
-  const draw=()=>{const h=search(browseState.q,browseState.type,browseState.s);
-   document.getElementById("bc").textContent=t("showing").replace("{n}",h.length).replace("{t}",rows.length);
-   document.getElementById("bl").innerHTML=h.length?h.map(card).join(""):`<div class="empty">${t("noRes")}</div>`;
-   app.querySelectorAll("[data-c]").forEach(el=>{const[f,v]=el.dataset.c.split(":");el.textContent=f==="ft"?search(browseState.q,v,browseState.s).length:search(browseState.q,browseState.type,v).length})};
-  document.getElementById("bq").oninput=e=>{browseState.q=e.target.value;draw()};
-  app.querySelectorAll("input[name=ft]").forEach(r=>r.onchange=()=>{browseState.type=r.value;draw()});
-  app.querySelectorAll("input[name=fs]").forEach(r=>r.onchange=()=>{browseState.s=r.value;draw()});
+  const opt=(list,cur)=>[["all",t("all")],...list].map(([v,l])=>`<option value="${v}"${v===cur?" selected":""}>${l}</option>`).join("");
+  app.innerHTML=`<div class="wrap page"><h1>${t("browseT")}</h1><p class="sub">${t("browseP")}</p>
+   <div class="filters"><div class="fld"><label for="bq">${t("search")}</label><input id="bq" type="search" placeholder="${t("searchPh")}" value="${esc(bs.q)}"></div>
+   <div class="fld"><label for="bt">${t("typeL")}</label><select id="bt">${opt(TYPES.map(x=>[x,t("t_"+TK(x))]),bs.type)}</select></div>
+   <div class="fld"><label for="bsr">${t("resL")}</label><select id="bsr">${opt(["I","K","N","C"].map(x=>[x,t("S_"+x)]),bs.s)}</select></div></div>
+   <p class="count" id="bc"></p><div id="bl"></div></div>`;
+  const draw=()=>{const k=bs.q.toLowerCase().split(/[\s,+/]+/).filter(x=>x.length>1);
+   const h=rows.filter(r=>(bs.type==="all"||r.type===bs.type)&&(bs.s==="all"||r.s===bs.s)&&k.every(x=>r.hay.includes(x)));
+   document.getElementById("bc").textContent=t("count").replace("{n}",h.length).replace("{t}",rows.length);
+   document.getElementById("bl").innerHTML=rowsTable(h);bindRows()};
+  document.getElementById("bq").oninput=e=>{bs.q=e.target.value;draw()};
+  document.getElementById("bt").onchange=e=>{bs.type=e.target.value;draw()};
+  document.getElementById("bsr").onchange=e=>{bs.s=e.target.value;draw()};
   draw();
  },
  drugs(){
-  const keys=Object.keys(N).filter(k=>N[k][3]!=="other").sort((a,b)=>nm(a).localeCompare(nm(b)));let last="",html="";
-  keys.forEach(k=>{const L=nm(k)[0].toUpperCase();if(L!==last){html+=`<div class="letter">${L}</div>`;last=L}
-   const rs=rows.filter(r=>r.a===k||r.b===k),ci=rs.filter(r=>r.s==="I").length,cc=rs.filter(r=>r.s==="C").length;
-   html+=`<a class="dcard" href="#drug-${k}"><div><b>${esc(nm(k))}</b><small>${rs.length} ${t("entries")}</small></div><span class="badges">${ci?`<span class="dot p-I" title="${t("S_I")}">${ci}</span>`:""}${cc?`<span class="dot p-C" title="${t("S_C")}">${cc}</span>`:""}</span></a>`});
-  app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navDrugs")}</p><h2>${t("drugsT")}</h2><p class="lead">${t("drugsL")}</p><div class="az">${html}</div></section></div>`;
+  const ks=Object.keys(N).filter(k=>N[k][3]==="drug"||FLUIDS.includes(k)).sort((a,b)=>nm(a).localeCompare(nm(b)));
+  app.innerHTML=`<div class="wrap page"><h1>${t("drugsT")}</h1><p class="sub">${t("drugsP")}</p>
+   <div class="filters" style="grid-template-columns:minmax(0,1fr)"><div class="fld"><label for="dq">${t("search")}</label><input id="dq" type="search" placeholder="${t("filterPh")}"></div></div><div id="dl"></div></div>`;
+  const draw=q=>{q=q.toLowerCase().trim();const list=ks.filter(k=>!q||N[k].slice(0,3).join(" ").toLowerCase().includes(q));
+   document.getElementById("dl").innerHTML=`<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colName")}</th><th>${t("colAlt")}</th><th class="num">${t("colN")}</th><th class="num">${t("colI")}</th><th class="num">${t("colC")}</th><th></th></tr></thead><tbody>${
+    list.length?list.map(k=>{const rs=rows.filter(r=>ov(r.a,k)||ov(r.b,k));const ni=rs.filter(r=>r.s==="I").length,nc=rs.filter(r=>r.s==="C").length;
+     return `<tr data-go="d-${k}"><td class="p">${esc(nm(k))}</td><td class="m">${esc(other(k)!==nm(k)?other(k):"")}</td><td class="num">${rs.length}</td><td class="num">${ni?`<span class="pill I">${ni}</span>`:"–"}</td><td class="num">${nc?`<span class="pill C">${nc}</span>`:"–"}</td><td class="chev">›</td></tr>`}).join("")
+    :`<tr class="empty-row"><td colspan="6">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;bindRows()};
+  document.getElementById("dq").oninput=e=>draw(e.target.value);draw("");
  },
  drug(k){
-  if(!N[k]){go("drugs");return}
-  const rs=rows.filter(r=>r.a===k||r.b===k);
-  const aliases=N[k][2].split(" ").filter(w=>w.length>2&&!nm(k).toLowerCase().includes(w)).slice(0,6).join(", ");
-  app.innerHTML=`<div class="view"><section class="sec"><a class="crumb" href="#drugs">${t("back")}</a>
-  <div class="dhead"><div><h1>${esc(nm(k))}</h1>${aliases?`<p class="alias">${t("aka")}: ${esc(aliases)}</p>`:""}</div><a class="btn ghost" href="#check">${t("navCheck")} →</a></div>
-
-  ${TYPES.map(ty=>{const g=rs.filter(r=>r.type===ty);return g.length?`<div class="group"><h3><span class="tcard-ic">${svg(ICON[ty])}</span>${t("t_"+TK(ty))}</h3><div class="list">${g.map(card).join("")}</div></div>`:""}).join("")||`<div class="empty">${t("nothing")}</div>`}
-  </section></div>`;
+  if(!N[k])return go("drugs");
+  const rs=rows.filter(r=>ov(r.a,k)||ov(r.b,k));
+  const sum=["I","K","N","C"].map(s=>[s,rs.filter(r=>r.s===s).length]).filter(x=>x[1]);
+  const al=[...new Set(N[k][2].split(" "))].filter(w=>w.length>2&&!nm(k).toLowerCase().includes(w)).slice(0,6).join(", ");
+  app.innerHTML=`<div class="wrap page"><div class="crumb"><a href="#drugs">${t("navDrugs")}</a><span>›</span><span>${esc(nm(k))}</span></div>
+   <h1>${esc(nm(k))}</h1><p class="sub">${al?`${t("aka")}: ${esc(al)}`:""}</p>
+   <div class="dsum">${sum.map(([s,n])=>`<span class="pill ${s}">${svg(SYMI[s],13)}${n} ${t("S_"+s)}</span>`).join("")}</div>
+   ${TYPES.map(ty=>{const gq=rs.filter(r=>r.type===ty);return gq.length?`<section class="section" style="padding-top:0;padding-bottom:28px"><h2 style="font-size:1.15rem;margin-bottom:12px">${t("t_"+TK(ty))}</h2>${rowsTable(gq,{hideA:k,match:true})}</section>`:""}).join("")}</div>`;
+  bindRows();
  },
- about(){
-  app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navAbout")}</p><h2>${t("aboutT")}</h2>
-  <div class="about"><div><p>${t("aboutP1")}</p><p>${t("aboutP2")}</p><p>${t("aboutP3")}</p>
-   <h3>${t("srcT")}</h3><ul class="srclist">${Object.values(S).map(([l,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(l)}</a></li>`).join("")}</ul></div>
-  <div><h3 style="margin-top:0">${t("legendT")}</h3><div class="legend">${["C","I","K","N"].map(s=>`<div><span class="pill p-${s}">${t("S_"+s)}</span><p>${t("SD_"+s)}</p></div>`).join("")}</div></div></div></section></div>`;
+ entry(i){
+  const r=rows[+i];if(!r)return go("browse");
+  const rel=rows.filter(x=>x!==r&&(x.a===r.a||x.b===r.a)).slice(0,8);
+  app.innerHTML=`<div class="wrap page"><div class="crumb"><a href="#browse">${t("navBrowse")}</a><span>›</span><span>${esc(nm(r.a))} + ${esc(nm(r.b))}</span></div>
+   <div class="detail"><div>${verdict(r).replace(/<a class="vmore"[^>]*>[^<]*<\/a>/,"")}
+     ${rel.length?`<section class="section" style="padding-bottom:0"><h2 style="font-size:1.15rem;margin-bottom:12px">${t("otherFor")} ${esc(nm(r.a))}</h2>${rowsTable(rel,{hideA:r.a})}</section>`:""}</div>
+    <aside><div class="panel"><h3>${t("about")}</h3><dl>
+     <dt>${t("result")}</dt><dd>${pill(r.s)}</dd>
+     <dt>${t("type")}</dt><dd>${t("t_"+TK(r.type))}</dd>
+     <dt>${t("checked")}</dt><dd>${t("checkedDate")}</dd></dl>
+     <p style="margin-top:14px;color:var(--muted);font-size:.92rem">${t("SD_"+r.s)}</p></div>
+     <div class="panel"><h3>${t("sources")}</h3><ul>${r.src.map(k=>`<li><a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a></li>`).join("")}</ul></div>
+     <div class="panel"><ul style="list-style:none;padding:0">${[r.a,r.b].filter(k=>N[k][3]!=="other").map(k=>`<li><a href="#d-${k}">${t("openDrug")}: ${esc(nm(k))}</a></li>`).join("")}</ul></div></aside></div></div>`;
+  bindRows();
  }
 };
 function go(h){if(location.hash==="#"+h)route();else location.hash=h}
 function route(){
   const h=(location.hash||"#home").slice(1);
-  document.getElementById("links").classList.remove("open");
-  document.querySelectorAll(".links a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+(h.startsWith("drug-")?"drugs":h)));
-  if(h.startsWith("drug-"))views.drug(h.slice(5));else(views[h]||views.home)();
-  window.scrollTo(0,0);
+  document.getElementById("links").classList.remove("open");document.getElementById("burger").setAttribute("aria-expanded","false");
+  const sec=h.startsWith("d-")?"drugs":h.startsWith("e-")?"browse":(V[h]?h:"home");
+  document.querySelectorAll(".links a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+sec));
+  if(h.startsWith("d-"))V.drug(h.slice(2));else if(h.startsWith("e-"))V.entry(h.slice(2));else(V[h]&&!["drug","entry"].includes(h)?V[h]:V.home)();
+  scrollTo(0,0);
 }
-function applyLang(){
-  document.documentElement.lang=lang;
-  document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
-  document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
-}
+function applyLang(){document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang))}
 document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;try{localStorage.setItem("ivlang",lang)}catch(e){}applyLang();route()});
-const bg=document.getElementById("burger");bg.onclick=()=>{const o=document.getElementById("links").classList.toggle("open");bg.setAttribute("aria-expanded",o)};
-window.addEventListener("hashchange",route);
-applyLang();route();
+const bg=document.getElementById("burger");bg.onclick=()=>bg.setAttribute("aria-expanded",document.getElementById("links").classList.toggle("open"));
+addEventListener("hashchange",route);applyLang();route();
 })();
