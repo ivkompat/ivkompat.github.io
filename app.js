@@ -119,7 +119,6 @@ const views={
    <div class="hero-card"><h3>${t("heroCardT")}</h3><p>${t("heroCardP")}</p>
     <div class="stats"><div class="stat"><b>${rows.length}</b><span>${t("statEntries")}</span></div><div class="stat"><b>${items}</b><span>${t("statDrugs")}</span></div><div class="stat"><b>${srcs}</b><span>${t("statSources")}</span></div></div></div>
   </div></section>
-  <div class="alert-wrap">${alertHTML}</div>
   <section class="sec"><p class="eyebrow">${t("navCheck")}</p><h2>${t("checkT")}</h2><p class="lead">${t("checkL")}</p>${checkerHTML()}</section>
   <section class="sec" style="padding-top:0"><h2>${t("typesT")}</h2><p class="lead">${t("typesL")}</p>
    <div class="grid4">${TYPES.map(ty=>`<a class="tcard" href="#browse" data-type="${ty}"><span class="ic">${svg(ICON[ty])}</span><h3>${t("t_"+TK(ty))}</h3><p>${t("d_"+TK(ty))}</p><span class="n">${rows.filter(r=>r.type===ty).length} ${t("entries")}</span></a>`).join("")}</div></section>
@@ -129,12 +128,12 @@ const views={
   app.querySelectorAll(".tcard").forEach(a=>a.onclick=()=>{browseState={q:"",type:a.dataset.type,s:"all"}});
   bindChecker(["ceftri","caIV"]);
  },
- check(){app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navCheck")}</p><h2>${t("checkT")}</h2><p class="lead">${t("checkL")}</p>${checkerHTML()}<div style="margin-top:24px">${alertHTML}</div></section></div>`;bindChecker()},
+ check(){app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navCheck")}</p><h2>${t("checkT")}</h2><p class="lead">${t("checkL")}</p>${checkerHTML()}</section></div>`;bindChecker()},
  browse(){
   const opts=(name,list,cur)=>[["all",t("all")],...list].map(([v,l])=>`<label class="opt"><input type="radio" name="${name}" value="${v}" ${cur===v?"checked":""}> ${l}<span class="c" data-c="${name}:${v}"></span></label>`).join("");
   app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navBrowse")}</p><h2>${t("browseT")}</h2><p class="lead">${t("browseL")}</p>
   <div class="browse"><aside class="side"><div><h4>${t("filterType")}</h4>${opts("ft",TYPES.map(x=>[x,t("t_"+TK(x))]),browseState.type)}</div><div><h4>${t("filterRes")}</h4>${opts("fs",["I","C","K","N"].map(x=>[x,t("S_"+x)]),browseState.s)}</div></aside>
-  <div class="list"><div class="bar"><input id="bq" type="search" placeholder="${t("searchPh")}" value="${esc(browseState.q)}"><span class="count" id="bc"></span></div>${alertHTML}<div class="list" id="bl"></div></div></div></section></div>`;
+  <div class="list"><div class="bar"><input id="bq" type="search" placeholder="${t("searchPh")}" value="${esc(browseState.q)}"><span class="count" id="bc"></span></div><div class="list" id="bl"></div></div></div></section></div>`;
   const draw=()=>{const h=search(browseState.q,browseState.type,browseState.s);
    document.getElementById("bc").textContent=t("showing").replace("{n}",h.length).replace("{t}",rows.length);
    document.getElementById("bl").innerHTML=h.length?h.map(card).join(""):`<div class="empty">${t("noRes")}</div>`;
@@ -157,7 +156,7 @@ const views={
   const aliases=N[k][2].split(" ").filter(w=>w.length>2&&!nm(k).toLowerCase().includes(w)).slice(0,6).join(", ");
   app.innerHTML=`<div class="view"><section class="sec"><a class="crumb" href="#drugs">${t("back")}</a>
   <div class="dhead"><div><h1>${esc(nm(k))}</h1>${aliases?`<p class="alias">${t("aka")}: ${esc(aliases)}</p>`:""}</div><a class="btn ghost" href="#check">${t("navCheck")} →</a></div>
-  ${alertHTML}<div style="height:28px"></div>
+
   ${TYPES.map(ty=>{const g=rs.filter(r=>r.type===ty);return g.length?`<div class="group"><h3><span class="tcard-ic">${svg(ICON[ty])}</span>${t("t_"+TK(ty))}</h3><div class="list">${g.map(card).join("")}</div></div>`:""}).join("")||`<div class="empty">${t("nothing")}</div>`}
   </section></div>`;
  },
