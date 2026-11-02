@@ -19,7 +19,7 @@ const T={
   checkT:"Pair checker",checkP:"Select two drugs or fluids. Results come from official drug labels, hospital compatibility charts, manufacturer testing and clinical studies.",
   browseT:"Browse all entries",browseP:"Search any drug, brand or fluid. Select a row to see full details.",
   search:"Search",searchPh:"e.g. ceftriaxone, NaCl, Zosyn",typeL:"Type",resL:"Result",all:"All",
-  count:"{n} of {t} entries",more:"Show more",noRes:"No entries match this search.",
+  count:"{n} of {t} entries",range:"Showing {a}–{b} of {t} entries",filtered:"filtered",prev:"Previous",next:"Next",pages:"Pages",more:"Show more",noRes:"No entries match this search.",
   colRes:"Result",colPair:"Combination",colType:"Type",colNote:"Details",
   drugsT:"Drugs and fluids A–Z",drugsP:"Select a drug to see every combination checked for it.",
   filterPh:"Filter by name",colName:"Name",colAlt:"Indonesian name",colN:"Entries",colI:"Incompatible",colC:"Compatible",
@@ -47,7 +47,7 @@ const T={
   checkT:"Cek pasangan",checkP:"Pilih dua obat atau cairan. Hasil berasal dari label obat resmi, bagan kompatibilitas rumah sakit, uji produsen, dan studi klinis.",
   browseT:"Semua data",browseP:"Cari obat, merek, atau cairan. Pilih baris untuk melihat detail.",
   search:"Cari",searchPh:"mis. seftriakson, NaCl, Zosyn",typeL:"Jenis",resL:"Hasil",all:"Semua",
-  count:"{n} dari {t} data",more:"Tampilkan lebih banyak",noRes:"Tidak ada data yang cocok.",
+  count:"{n} dari {t} data",range:"Menampilkan {a}–{b} dari {t} data",filtered:"tersaring",prev:"Sebelumnya",next:"Berikutnya",pages:"Halaman",more:"Tampilkan lebih banyak",noRes:"Tidak ada data yang cocok.",
   colRes:"Hasil",colPair:"Kombinasi",colType:"Jenis",colNote:"Keterangan",
   drugsT:"Obat dan cairan A–Z",drugsP:"Pilih obat untuk melihat semua kombinasi yang sudah diperiksa.",
   filterPh:"Saring nama",colName:"Nama",colAlt:"Nama Inggris",colN:"Data",colI:"Inkompatibel",colC:"Kompatibel",
@@ -107,6 +107,15 @@ function rowsTable(list,{hideA,match,noType}={}){
     return `<tr data-go="e-${r.i}" tabindex="0"><td class="res-c">${pill(r.s)}${noType?"":`<span class="m-type">${t("t_"+TK(r.type))}</span>`}</td><td class="p">${hideA?esc(nm(otherK)):`${esc(nm(r.a))}<span class="x">+</span>${esc(nm(r.b))}`}</td>${noType?"":`<td class="m">${t("t_"+TK(r.type))}</td>`}<td class="note">${esc(note(r))}</td><td class="refc">${refCell(r)}</td><td class="chev">›</td></tr>`}).join("")
    :`<tr class="empty-row"><td colspan="6">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;
 }
+const PER=25;
+function pagerHTML(total,page,id){const pages=Math.ceil(total/PER);if(pages<=1)return "";
+  const nums=[];const add=n=>{if(!nums.includes(n))nums.push(n)};
+  add(1);for(let i=page-1;i<=page+1;i++)if(i>1&&i<pages)add(i);add(pages);
+  let h=`<nav class="pager" aria-label="${t("pages")}" data-pg="${id}"><button type="button" data-p="${page-1}" ${page===1?"disabled":""} aria-label="${t("prev")}">‹ ${t("prev")}</button><div class="pnums">`;
+  let last=0;nums.forEach(n=>{if(n-last>1)h+=`<span class="gap">…</span>`;h+=`<button type="button" data-p="${n}" class="${n===page?"on":""}" ${n===page?'aria-current="page"':""}>${n}</button>`;last=n});
+  return h+`</div><button type="button" data-p="${page+1}" ${page===pages?"disabled":""} aria-label="${t("next")}">${t("next")} ›</button></nav>`;}
+function bindPager(root,onGo){root.querySelectorAll(".pager button[data-p]").forEach(b=>b.onclick=()=>{if(b.disabled)return;onGo(+b.dataset.p)})}
+const rangeTxt=(total,page)=>t("range").replace("{a}",Math.min(total,(page-1)*PER+1)).replace("{b}",Math.min(total,page*PER)).replace("{t}",total);
 function bindRows(root=app){root.querySelectorAll("tr[data-go]").forEach(tr=>{tr.onclick=e=>{if(e.target.closest("a"))return;location.hash=tr.dataset.go};tr.onkeydown=e=>{if(e.key==="Enter")location.hash=tr.dataset.go}})}
 
 /* ---------- Pair checker ---------- */
@@ -205,14 +214,16 @@ const V={
    <p class="count" id="bc"></p><div id="bl"></div></div>`;
   const draw=()=>{const k=bs.q.toLowerCase().split(/[\s,+/]+/).filter(x=>x.length>1);
    const h=rows.filter(r=>(bs.type==="all"||r.type===bs.type)&&(bs.s==="all"||r.s===bs.s)&&(!bs.rf||bs.rf==="all"||r.src.some(x=>RTYPE(x)===bs.rf))&&k.every(x=>r.hay.includes(x)));
-   document.getElementById("bc").textContent=t("count").replace("{n}",h.length).replace("{t}",rows.length);
-   const show=h.slice(0,limit);document.getElementById("bl").innerHTML=rowsTable(show)+(h.length>limit?`<div style="text-align:center;margin-top:16px"><button class="btn-more" id="bmore" type="button">${t("more")} (${h.length-limit})</button></div>`:"");bindRows();
-   const m=document.getElementById("bmore");if(m)m.onclick=()=>{limit+=100;draw()}};
-  let limit=100;
-  document.getElementById("bq").oninput=e=>{bs.q=e.target.value;limit=100;draw()};
-  document.getElementById("bt").onchange=e=>{bs.type=e.target.value;limit=100;draw()};
-  document.getElementById("bsr").onchange=e=>{bs.s=e.target.value;limit=100;draw()};
-  document.getElementById("brf").onchange=e=>{bs.rf=e.target.value;limit=100;draw()};
+   const pages=Math.max(1,Math.ceil(h.length/PER));if(page>pages)page=pages;
+   document.getElementById("bc").textContent=h.length?rangeTxt(h.length,page)+(h.length<rows.length?` (${t("filtered")})`:""):t("count").replace("{n}",0).replace("{t}",rows.length);
+   const bl=document.getElementById("bl");bl.innerHTML=rowsTable(h.slice((page-1)*PER,page*PER))+pagerHTML(h.length,page,"b");
+   bindPager(bl,p=>{page=p;draw();document.getElementById("bc").scrollIntoView({behavior:"smooth",block:"start"})});bindRows();
+   };
+  let page=1;
+  document.getElementById("bq").oninput=e=>{bs.q=e.target.value;page=1;draw()};
+  document.getElementById("bt").onchange=e=>{bs.type=e.target.value;page=1;draw()};
+  document.getElementById("bsr").onchange=e=>{bs.s=e.target.value;page=1;draw()};
+  document.getElementById("brf").onchange=e=>{bs.rf=e.target.value;page=1;draw()};
   draw();
  },
  drugs(){
@@ -234,8 +245,11 @@ const V={
   app.innerHTML=`<div class="wrap page"><div class="crumb"><a href="#drugs">${t("navDrugs")}</a><span>›</span><span>${esc(nm(k))}</span></div>
    <h1>${esc(nm(k))}</h1>
    <div class="dsum">${sum.map(([s,n])=>`<span class="pill ${s}">${svg(SYMI[s],13)}${n} ${t("S_"+s)}</span>`).join("")}</div>
-   ${TYPES.map(ty=>{const gq=rs.filter(r=>r.type===ty);return gq.length?`<section class="section" style="padding-top:0;padding-bottom:28px"><h2 style="font-size:1.15rem;margin-bottom:12px">${t("t_"+TK(ty))}</h2>${rowsTable(gq,{hideA:k,match:true,noType:true})}</section>`:""}).join("")}</div>`;
-  bindRows();
+   ${TYPES.map(ty=>{const gq=rs.filter(r=>r.type===ty);return gq.length?`<section class="section" style="padding-top:0;padding-bottom:28px"><h2 style="font-size:1.15rem;margin-bottom:12px">${t("t_"+TK(ty))} <span class="cnt">(${gq.length})</span></h2><p class="count" data-rc="${TK(ty)}"></p><div data-sec="${TK(ty)}"></div></section>`:""}).join("")}</div>`;
+  TYPES.forEach(ty=>{const gq=rs.filter(r=>r.type===ty);const box=app.querySelector(`[data-sec="${TK(ty)}"]`);if(!box)return;let pg=1;
+    const draw=()=>{box.innerHTML=rowsTable(gq.slice((pg-1)*PER,pg*PER),{hideA:k,match:true,noType:true})+pagerHTML(gq.length,pg,TK(ty));
+      app.querySelector(`[data-rc="${TK(ty)}"]`).textContent=gq.length>PER?rangeTxt(gq.length,pg):"";
+      bindRows(box);bindPager(box,p=>{pg=p;draw();box.parentElement.scrollIntoView({behavior:"smooth",block:"start"})})};draw()});
  },
  entry(i){
   const r=rows[+i];if(!r)return go("browse");

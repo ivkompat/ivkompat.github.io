@@ -288,3 +288,14 @@ main{flex:1 0 auto}
   .links{background:var(--brand-d);border-bottom:0}
   .links a{border-bottom-color:rgba(255,255,255,.08)}
 }
+
+/* Pagination */
+.pager{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;flex-wrap:wrap}
+.pager button{min-width:40px;height:40px;padding:0 12px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;font-weight:600;cursor:pointer}
+.pager button:hover:not([disabled]):not(.on){border-color:var(--brand);color:var(--brand)}
+.pager button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.pager button[disabled]{opacity:.45;cursor:default}
+.pnums{display:flex;gap:6px;align-items:center}
+.pager .gap{color:var(--muted);padding:0 2px}
+@media (max-width:560px){.pager button{min-width:36px;height:38px;padding:0 10px}.pager>button{font-size:.88rem}}
+.cnt{color:var(--muted);font-weight:600;font-size:.95rem}
