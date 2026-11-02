@@ -16,19 +16,19 @@ const T={
   t_Diluent:"Drug + diluent",t_Ysite:"Y-site",t_Admixture:"Same bag",t_Syringe:"Same syringe",
   d_Diluent:"Which fluid to reconstitute or dilute in.",d_Ysite:"Two infusions meeting in one line.",d_Admixture:"Two drugs mixed in one bag.",d_Syringe:"Two drugs drawn up in one syringe.",
   entries:"entries",
-  checkT:"Pair checker",checkP:"Select two drugs or fluids. Results come from official drug labels, hospital compatibility charts, manufacturer testing and Indonesian studies.",
-  browseT:"Browse all entries",browseP:"Search any drug, brand or fluid in English or Indonesian. Select a row to see full details.",
+  checkT:"Pair checker",checkP:"Select two drugs or fluids. Results come from official drug labels, hospital compatibility charts, manufacturer testing and clinical studies.",
+  browseT:"Browse all entries",browseP:"Search any drug, brand or fluid. Select a row to see full details.",
   search:"Search",searchPh:"e.g. ceftriaxone, NaCl, Zosyn",typeL:"Type",resL:"Result",all:"All",
   count:"{n} of {t} entries",more:"Show more",noRes:"No entries match this search.",
   colRes:"Result",colPair:"Combination",colType:"Type",colNote:"Details",
   drugsT:"Drugs and fluids A–Z",drugsP:"Select a drug to see every combination checked for it.",
   filterPh:"Filter by name",colName:"Name",colAlt:"Indonesian name",colN:"Entries",colI:"Incompatible",colC:"Compatible",
-  combined:"Combined with",reference:"Reference",sumAgree:"{n} references found. All say: {s}.",sumDisagree:"{n} references found and they differ ({s}). Use the most cautious result and check with the pharmacy.",rt_label:"Official drug label",rt_chart:"Hospital chart",rt_mfr:"Manufacturer testing",rt_study:"Indonesian study",aka:"Also searched as",
+  combined:"Combined with",reference:"Reference",sumAgree:"{n} references found. All say: {s}.",sumDisagree:"{n} references found and they differ ({s}). Use the most cautious result and check with the pharmacy.",rt_label:"Official drug label",rt_chart:"Hospital chart",rt_mfr:"Manufacturer testing",rt_study:"Clinical study",aka:"Also searched as",
   home:"Home",about:"About this entry",type:"Type",result:"Result",checked:"Last checked",
   checkedDate:"2 November 2026",otherFor:"Other entries for",openDrug:"Open drug page",
   S_C:"Compatible",S_I:"Incompatible",S_K:"Conditional",S_N:"Not established",S_D:"Conflicting data",SD_D:"Sources disagree. Check with the pharmacy before giving together.",
   SD_C:"The source lists this combination as compatible.",SD_I:"The source says not to mix, or warns of precipitation or loss of activity.",SD_K:"Depends on conditions such as concentration or product; see the details.",SD_N:"No compatibility information is available.",
-  foot:"IV Compat. Compiled from official drug labels, hospital compatibility charts, manufacturer testing and Indonesian research. Last checked 2 November 2026."},
+  foot:"IV Compat. Compiled from official drug labels, hospital compatibility charts, manufacturer testing and clinical research. Last checked 2 November 2026."},
  id:{navHome:"Beranda",navCheck:"Cek pasangan",navBrowse:"Semua data",navDrugs:"Obat A–Z",
   heroT:"Referensi kompatibilitas IV",
   heroP:"Pilih dua obat atau cairan IV untuk melihat apakah keduanya boleh dicampur, diencerkan, atau diberikan bersama. Setiap hasil menampilkan sumbernya.",
@@ -44,19 +44,19 @@ const T={
   t_Diluent:"Obat + pelarut",t_Ysite:"Y-site",t_Admixture:"Satu kantong",t_Syringe:"Satu spuit",
   d_Diluent:"Cairan untuk rekonstitusi atau pengenceran.",d_Ysite:"Dua infus bertemu di satu jalur.",d_Admixture:"Dua obat dicampur dalam satu kantong.",d_Syringe:"Dua obat ditarik ke satu spuit.",
   entries:"data",
-  checkT:"Cek pasangan",checkP:"Pilih dua obat atau cairan. Hasil berasal dari label obat resmi, bagan kompatibilitas rumah sakit, uji produsen, dan studi di Indonesia.",
-  browseT:"Semua data",browseP:"Cari obat, merek, atau cairan dalam bahasa Inggris atau Indonesia. Pilih baris untuk melihat detail.",
+  checkT:"Cek pasangan",checkP:"Pilih dua obat atau cairan. Hasil berasal dari label obat resmi, bagan kompatibilitas rumah sakit, uji produsen, dan studi klinis.",
+  browseT:"Semua data",browseP:"Cari obat, merek, atau cairan. Pilih baris untuk melihat detail.",
   search:"Cari",searchPh:"mis. seftriakson, NaCl, Zosyn",typeL:"Jenis",resL:"Hasil",all:"Semua",
   count:"{n} dari {t} data",more:"Tampilkan lebih banyak",noRes:"Tidak ada data yang cocok.",
   colRes:"Hasil",colPair:"Kombinasi",colType:"Jenis",colNote:"Keterangan",
   drugsT:"Obat dan cairan A–Z",drugsP:"Pilih obat untuk melihat semua kombinasi yang sudah diperiksa.",
   filterPh:"Saring nama",colName:"Nama",colAlt:"Nama Inggris",colN:"Data",colI:"Inkompatibel",colC:"Kompatibel",
-  combined:"Dikombinasikan dengan",reference:"Referensi",sumAgree:"{n} referensi ditemukan. Semua menyatakan: {s}.",sumDisagree:"{n} referensi ditemukan dan hasilnya berbeda ({s}). Gunakan hasil yang paling hati-hati dan konfirmasi dengan farmasi.",rt_label:"Label obat resmi",rt_chart:"Bagan rumah sakit",rt_mfr:"Uji produsen",rt_study:"Studi Indonesia",aka:"Juga dicari sebagai",
+  combined:"Dikombinasikan dengan",reference:"Referensi",sumAgree:"{n} referensi ditemukan. Semua menyatakan: {s}.",sumDisagree:"{n} referensi ditemukan dan hasilnya berbeda ({s}). Gunakan hasil yang paling hati-hati dan konfirmasi dengan farmasi.",rt_label:"Label obat resmi",rt_chart:"Bagan rumah sakit",rt_mfr:"Uji produsen",rt_study:"Studi klinis",aka:"Juga dicari sebagai",
   home:"Beranda",about:"Tentang data ini",type:"Jenis",result:"Hasil",checked:"Terakhir diperiksa",
   checkedDate:"2 November 2026",otherFor:"Data lain untuk",openDrug:"Buka halaman obat",
   S_C:"Kompatibel",S_I:"Inkompatibel",S_K:"Bersyarat",S_N:"Belum terbukti",S_D:"Data bertentangan",SD_D:"Sumber saling bertentangan. Konfirmasi dengan farmasi sebelum diberikan bersama.",
   SD_C:"Sumber menyatakan kombinasi ini kompatibel.",SD_I:"Sumber melarang pencampuran, atau memperingatkan endapan atau hilangnya aktivitas.",SD_K:"Tergantung kondisi seperti konsentrasi atau produk; lihat detail.",SD_N:"Tidak ada informasi kompatibilitas.",
-  foot:"IV Compat. Disusun dari label obat resmi, bagan kompatibilitas rumah sakit, uji produsen, dan penelitian di Indonesia. Terakhir diperiksa 2 November 2026."}
+  foot:"IV Compat. Disusun dari label obat resmi, bagan kompatibilitas rumah sakit, uji produsen, dan penelitian klinis. Terakhir diperiksa 2 November 2026."}
 };
 const TYPES=["Diluent","Y-site","Admixture","Syringe"],TK=x=>x.replace("-","");
 const N=window.NAMES,S=window.SOURCES;
@@ -186,10 +186,10 @@ const V={
   app.innerHTML=`<div class="wrap page"><h1>${t("drugsT")}</h1><p class="sub">${t("drugsP")}</p>
    <div class="filters" style="grid-template-columns:minmax(0,1fr)"><div class="fld"><label for="dq">${t("search")}</label><input id="dq" type="search" placeholder="${t("filterPh")}"></div></div><div id="dl"></div></div>`;
   const draw=q=>{q=q.toLowerCase().trim();const list=ks.filter(k=>!q||N[k].slice(0,3).join(" ").toLowerCase().includes(q));
-   document.getElementById("dl").innerHTML=`<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colName")}</th><th>${t("colAlt")}</th><th class="num">${t("colN")}</th><th class="num">${t("colI")}</th><th class="num">${t("colC")}</th><th></th></tr></thead><tbody>${
+   document.getElementById("dl").innerHTML=`<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colName")}</th><th class="num">${t("colN")}</th><th class="num">${t("colI")}</th><th class="num">${t("colC")}</th><th></th></tr></thead><tbody>${
     list.length?list.map(k=>{const rs=rows.filter(r=>ov(r.a,k)||ov(r.b,k));const ni=rs.filter(r=>r.s==="I").length,nc=rs.filter(r=>r.s==="C").length;
-     return `<tr data-go="d-${k}"><td class="p">${esc(nm(k))}</td><td class="m">${esc(other(k)!==nm(k)?other(k):"")}</td><td class="num">${rs.length}</td><td class="num">${ni?`<span class="pill I">${ni}</span>`:"–"}</td><td class="num">${nc?`<span class="pill C">${nc}</span>`:"–"}</td><td class="chev">›</td></tr>`}).join("")
-    :`<tr class="empty-row"><td colspan="6">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;bindRows()};
+     return `<tr data-go="d-${k}"><td class="p">${esc(nm(k))}</td><td class="num">${rs.length}</td><td class="num">${ni?`<span class="pill I">${ni}</span>`:"–"}</td><td class="num">${nc?`<span class="pill C">${nc}</span>`:"–"}</td><td class="chev">›</td></tr>`}).join("")
+    :`<tr class="empty-row"><td colspan="5">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;bindRows()};
   document.getElementById("dq").oninput=e=>draw(e.target.value);draw("");
  },
  drug(k){
@@ -198,7 +198,7 @@ const V={
   const sum=["I","D","K","N","C"].map(s=>[s,rs.filter(r=>r.s===s).length]).filter(x=>x[1]);
   const al=[...new Set(N[k][2].split(" "))].filter(w=>w.length>2&&!nm(k).toLowerCase().includes(w)).slice(0,6).join(", ");
   app.innerHTML=`<div class="wrap page"><div class="crumb"><a href="#drugs">${t("navDrugs")}</a><span>›</span><span>${esc(nm(k))}</span></div>
-   <h1>${esc(nm(k))}</h1><p class="sub">${al?`${t("aka")}: ${esc(al)}`:""}</p>
+   <h1>${esc(nm(k))}</h1>
    <div class="dsum">${sum.map(([s,n])=>`<span class="pill ${s}">${svg(SYMI[s],13)}${n} ${t("S_"+s)}</span>`).join("")}</div>
    ${TYPES.map(ty=>{const gq=rs.filter(r=>r.type===ty);return gq.length?`<section class="section" style="padding-top:0;padding-bottom:28px"><h2 style="font-size:1.15rem;margin-bottom:12px">${t("t_"+TK(ty))}</h2>${rowsTable(gq,{hideA:k,match:true})}</section>`:""}).join("")}</div>`;
   bindRows();
