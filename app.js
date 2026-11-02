@@ -23,7 +23,7 @@ const T={
   colRes:"Result",colPair:"Combination",colType:"Type",colNote:"Details",
   drugsT:"Drugs and fluids A–Z",drugsP:"Select a drug to see every combination checked for it.",
   filterPh:"Filter by name",colName:"Name",colAlt:"Indonesian name",colN:"Entries",colI:"Incompatible",colC:"Compatible",
-  combined:"Combined with",reference:"Reference",common:"Common checks:",sumAgree:"{n} references found. All say: {s}.",sumDisagree:"{n} references found and they differ ({s}). Use the most cautious result and check with the pharmacy.",rt_label:"Official drug label",rt_chart:"Hospital chart",rt_mfr:"Manufacturer testing",rt_study:"Clinical study",aka:"Also searched as",
+  combined:"Combined with",reference:"Reference",report:"Report an error in this entry",typePh:"Type to search, e.g. ceftriaxone",noMatch:"No match. Try another name or brand.",common:"Common checks:",sumAgree:"{n} references found. All say: {s}.",sumDisagree:"{n} references found and they differ ({s}). Use the most cautious result and check with the pharmacy.",rt_label:"Official drug label",rt_chart:"Hospital chart",rt_mfr:"Manufacturer testing",rt_study:"Clinical study",aka:"Also searched as",
   home:"Home",about:"About this entry",type:"Type",result:"Result",checked:"Last checked",
   checkedDate:"2 November 2026",otherFor:"Other entries for",openDrug:"Open drug page",
   S_C:"Compatible",S_I:"Incompatible",S_K:"Conditional",S_N:"Not established",S_D:"Conflicting data",SD_D:"Sources disagree. Check with the pharmacy before giving together.",
@@ -51,7 +51,7 @@ const T={
   colRes:"Hasil",colPair:"Kombinasi",colType:"Jenis",colNote:"Keterangan",
   drugsT:"Obat dan cairan A–Z",drugsP:"Pilih obat untuk melihat semua kombinasi yang sudah diperiksa.",
   filterPh:"Saring nama",colName:"Nama",colAlt:"Nama Inggris",colN:"Data",colI:"Inkompatibel",colC:"Kompatibel",
-  combined:"Dikombinasikan dengan",reference:"Referensi",common:"Cek yang sering dipakai:",sumAgree:"{n} referensi ditemukan. Semua menyatakan: {s}.",sumDisagree:"{n} referensi ditemukan dan hasilnya berbeda ({s}). Gunakan hasil yang paling hati-hati dan konfirmasi dengan farmasi.",rt_label:"Label obat resmi",rt_chart:"Bagan rumah sakit",rt_mfr:"Uji produsen",rt_study:"Studi klinis",aka:"Juga dicari sebagai",
+  combined:"Dikombinasikan dengan",reference:"Referensi",report:"Laporkan kesalahan pada data ini",typePh:"Ketik untuk mencari, mis. seftriakson",noMatch:"Tidak ditemukan. Coba nama atau merek lain.",common:"Cek yang sering dipakai:",sumAgree:"{n} referensi ditemukan. Semua menyatakan: {s}.",sumDisagree:"{n} referensi ditemukan dan hasilnya berbeda ({s}). Gunakan hasil yang paling hati-hati dan konfirmasi dengan farmasi.",rt_label:"Label obat resmi",rt_chart:"Bagan rumah sakit",rt_mfr:"Uji produsen",rt_study:"Studi klinis",aka:"Juga dicari sebagai",
   home:"Beranda",about:"Tentang data ini",type:"Jenis",result:"Hasil",checked:"Terakhir diperiksa",
   checkedDate:"2 November 2026",otherFor:"Data lain untuk",openDrug:"Buka halaman obat",
   S_C:"Kompatibel",S_I:"Inkompatibel",S_K:"Bersyarat",S_N:"Belum terbukti",S_D:"Data bertentangan",SD_D:"Sumber saling bertentangan. Konfirmasi dengan farmasi sebelum diberikan bersama.",
@@ -88,7 +88,12 @@ const RTYPE=k=>k==="vch"?"chart":(k==="fkSmof"||k==="fkOmeg")?"mfr":(k==="ningru
 const SHORT={vch:"VCH Y-site chart (2025)",fkSmof:"Fresenius Kabi SMOFlipid guide (2024)",fkOmeg:"Fresenius Kabi Omegaven guide (2024)",ningrum:"Ningrum et al., JIFFK 2024",dwij:"Dwijayanti et al., IJCP 2016"};
 const short=k=>SHORT[k]||S[k][0];
 const rbadge=k=>`<span class="rtype ${RTYPE(k)}">${t("rt_"+RTYPE(k))}</span>`;
-function refBlock(r){return `<div class="refbox"><div class="refh">${t("reference")}</div><ol>${r.src.map(k=>`<li>${rbadge(k)}<span class="rtext">${srcOne(k)}</span></li>`).join("")}</ol></div>`}
+const REPO="https://github.com/ranatalha4/iv-compat/issues/new";
+function reportURL(r){const title=`Entry #${r.i}: ${N[r.a][0]} + ${N[r.b][0]}`;
+  const body=`**Entry:** #${r.i}\n**Combination:** ${N[r.a][0]} + ${N[r.b][0]}\n**Type:** ${r.type}\n**Current result:** ${T.en["S_"+r.s]}\n**References:** ${r.src.map(k=>S[k][0]).join("; ")}\n\n**What is wrong?**\n\n\n**Correct information and its source (label, reference book, study):**\n\n`;
+  return `${REPO}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`}
+const reportLink=r=>`<a class="report" href="${reportURL(r)}" target="_blank" rel="noopener">${svg('<path d="M4 21V4h11l-1 4h6v9H9l1-4H4"/>',15)}${t("report")}</a>`;
+function refBlock(r){return `<div class="refbox"><div class="refh">${t("reference")}</div><ol>${r.src.map(k=>`<li>${rbadge(k)}<span class="rtext">${srcOne(k)}</span></li>`).join("")}</ol><div class="rep-row">${reportLink(r)}</div></div>`}
 const refCell=r=>r.src.map(k=>`<div class="rc">${rbadge(k)}<span>${esc(short(k))}</span></div>`).join("");
 function verdict(r){
   return `<article class="verdict"><div class="vband ${r.s}">${svg(SYMI[r.s],20)}${t("S_"+r.s)}</div>
@@ -105,24 +110,48 @@ function rowsTable(list,{hideA,match,noType}={}){
 function bindRows(root=app){root.querySelectorAll("tr[data-go]").forEach(tr=>{tr.onclick=e=>{if(e.target.closest("a"))return;location.hash=tr.dataset.go};tr.onkeydown=e=>{if(e.key==="Enter")location.hash=tr.dataset.go}})}
 
 /* ---------- Pair checker ---------- */
-function options(sel){
-  const drugs=Object.keys(N).filter(k=>N[k][3]==="drug"&&!HIDE.includes(k)).sort((a,b)=>nm(a).localeCompare(nm(b)));
-  const o=k=>`<option value="${k}"${k===sel?" selected":""}>${esc(nm(k))}</option>`;
-  return `<option value="">${t("choose")}</option><optgroup label="${t("gFluids")}">${FLUIDS.map(o).join("")}</optgroup><optgroup label="${t("gDrugs")}">${drugs.map(o).join("")}</optgroup>`;
+const pickKeys=()=>{const d=Object.keys(N).filter(k=>N[k][3]==="drug"&&!HIDE.includes(k)).sort((a,b)=>nm(a).localeCompare(nm(b)));return [...FLUIDS.map(k=>[k,"f"]),...d.map(k=>[k,"d"])]};
+function comboHTML(id,label,sel){
+  return `<div class="fld"><label for="${id}">${label}</label><div class="combo"><input id="${id}" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="${id}-l" autocomplete="off" spellcheck="false" placeholder="${t("typePh")}" value="${sel?esc(nm(sel)):""}" data-k="${sel||""}"><span class="cb-ic" aria-hidden="true">${svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',18)}</span><ul class="cb-list" id="${id}-l" role="listbox" hidden></ul></div></div>`;
 }
 function selectorHTML(){
   return `<div class="selector"><div class="row">
-   <div class="fld"><label for="sa">${t("first")}</label><select id="sa">${options(pair.a)}</select></div>
+   ${comboHTML("sa",t("first"),pair.a)}
    <button class="swap" id="sw" type="button" aria-label="${t("swap")}" title="${t("swap")}">${svg('<path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>',20)}</button>
-   <div class="fld"><label for="sb">${t("second")}</label><select id="sb">${options(pair.b)}</select></div></div>
+   ${comboHTML("sb",t("second"),pair.b)}</div>
    <div class="sel-foot"><span id="sel-hint">${t("pickBoth")}</span><button type="button" id="sclr">${t("clear")}</button></div></div>`;
 }
+function bindCombo(id,onPick){
+  const inp=document.getElementById(id),list=document.getElementById(id+"-l");let act=-1,items=[];
+  const set=k=>{inp.dataset.k=k||"";inp.value=k?nm(k):""};
+  const close=()=>{list.hidden=true;inp.setAttribute("aria-expanded","false");act=-1};
+  const open=()=>{const q=inp.value.toLowerCase().trim(),cur=inp.dataset.k&&inp.value===nm(inp.dataset.k);
+    const score=k=>{const ns=[N[k][0],N[k][1]].map(x=>x.toLowerCase());return ns.some(n=>n.startsWith(q))?0:ns.some(n=>n.includes(q))?1:N[k][2].split(" ").some(w=>w.startsWith(q))?2:3};
+    items=pickKeys().filter(([k])=>cur||!q||N[k].slice(0,3).join(" ").toLowerCase().includes(q));
+    if(q&&!cur)items=items.map((x,i)=>[x,score(x[0]),i]).sort((p,r)=>p[1]-r[1]||p[2]-r[2]).map(x=>x[0]);
+    items=items.slice(0,80);const grouped=!q||cur;
+    let h="",last="";items.forEach(([k,g],i)=>{if(grouped&&g!==last){h+=`<li class="cb-g" role="presentation">${g==="f"?t("gFluids"):t("gDrugs")}</li>`;last=g}
+      h+=`<li role="option" id="${id}-o${i}" data-i="${i}" class="cb-o${k===inp.dataset.k?" sel":""}" aria-selected="${k===inp.dataset.k}">${esc(nm(k))}</li>`});
+    list.innerHTML=items.length?h:`<li class="cb-none">${t("noMatch")}</li>`;list.hidden=false;inp.setAttribute("aria-expanded","true");act=-1};
+  const hl=i=>{list.querySelectorAll(".cb-o").forEach(o=>o.classList.toggle("act",+o.dataset.i===i));const el=document.getElementById(id+"-o"+i);if(el){el.scrollIntoView({block:"nearest"});inp.setAttribute("aria-activedescendant",el.id)}act=i};
+  const choose=i=>{const it=items[i];if(!it)return;set(it[0]);close();onPick()};
+  inp.onfocus=()=>{inp.select();open()};inp.onclick=open;
+  inp.oninput=()=>{inp.dataset.k="";open();onPick()};
+  inp.onkeydown=e=>{if(list.hidden&&(e.key==="ArrowDown"||e.key==="Enter")){open();e.preventDefault();return}
+    if(e.key==="ArrowDown"){hl(Math.min(act+1,items.length-1));e.preventDefault()}
+    else if(e.key==="ArrowUp"){hl(Math.max(act-1,0));e.preventDefault()}
+    else if(e.key==="Enter"){choose(act>=0?act:0);e.preventDefault()}
+    else if(e.key==="Escape"){close()}};
+  list.onmousedown=e=>{const o=e.target.closest(".cb-o");if(o){e.preventDefault();choose(+o.dataset.i)}};
+  inp.onblur=()=>setTimeout(()=>{if(!inp.dataset.k&&inp.value){const q=inp.value.toLowerCase().trim();const m=pickKeys().find(([k])=>nm(k).toLowerCase()===q||N[k][2].split(" ").includes(q));if(m){set(m[0]);onPick()}}close()},120);
+  return {get:()=>inp.dataset.k,set};
+}
+let combos={};
 function bindSelector(out){
-  const sa=document.getElementById("sa"),sb=document.getElementById("sb");
-  const run=()=>{pair={a:sa.value,b:sb.value};renderPair(out)};
-  sa.onchange=run;sb.onchange=run;
-  document.getElementById("sw").onclick=()=>{[sa.value,sb.value]=[sb.value,sa.value];run()};
-  document.getElementById("sclr").onclick=()=>{sa.value="";sb.value="";run()};
+  const run=()=>{pair={a:combos.a.get(),b:combos.b.get()};renderPair(out)};
+  combos={a:bindCombo("sa",run),b:bindCombo("sb",run)};
+  document.getElementById("sw").onclick=()=>{const a=combos.a.get(),b=combos.b.get();combos.a.set(b);combos.b.set(a);run()};
+  document.getElementById("sclr").onclick=()=>{combos.a.set("");combos.b.set("");run()};
   renderPair(out);
 }
 function lookup(a,b){
@@ -158,7 +187,7 @@ const V={
   <section class="section"><h2>${t("typesT")}</h2><p class="sub">${t("typesP")}</p><div class="tiles">${TYPES.map(ty=>`<a class="tile" href="#browse" data-type="${ty}"><span class="ic">${svg(ICON[ty])}</span><h3>${t("t_"+TK(ty))}</h3><p>${t("d_"+TK(ty))}</p><span class="n">${rows.filter(r=>r.type===ty).length} ${t("entries")}</span></a>`).join("")}</div></section>
   <section class="section"><h2>${t("keyT")}</h2><p class="sub">${t("keyP")}</p>${rowsTable(pick)}</section></div>`;
   bindSelector("hres");bindRows();
-  app.querySelectorAll(".quick button").forEach(b=>b.onclick=()=>{const sa=document.getElementById("sa"),sb=document.getElementById("sb");sa.value=b.dataset.a;sb.value=b.dataset.b;sa.dispatchEvent(new Event("change"));document.getElementById("hsec").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"})});
+  app.querySelectorAll(".quick button").forEach(b=>b.onclick=()=>{combos.a.set(b.dataset.a);combos.b.set(b.dataset.b);pair={a:b.dataset.a,b:b.dataset.b};renderPair("hres");document.getElementById("hsec").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"})});
   app.querySelectorAll(".tile").forEach(a=>a.onclick=()=>{bs={q:"",type:a.dataset.type,s:"all"}});
  },
  check(){
