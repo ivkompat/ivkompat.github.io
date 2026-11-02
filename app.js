@@ -1,186 +1,198 @@
 (function(){
 const T={
- en:{navHome:"Home",navCheck:"Pair checker",navBrowse:"Browse all",navDrugs:"Drugs A–Z",navAbout:"Sources & method",
-  heroEyebrow:"For nurses and pharmacists",heroTitle:"Check IV compatibility before you mix.",
-  heroLead:"Search drugs and IV fluids, or check two together. Every result links to the official label it came from.",
-  searchPh:"Search a drug, brand or fluid (e.g. ceftriaxone, NS, Zosyn)",searchBtn:"Search",tryLabel:"Try:",
-  statEntries:"verified entries",statDrugs:"drugs & fluids",statSources:"official sources",
-  heroCardT:"What's inside",heroCardP:"Drug + diluent, Y-site, same-bag admixture and syringe data from FDA labels and UK SmPCs.",
-  alert:"Reference only. A missing pair means “no data here”, not “compatible”. Always confirm with your pharmacist or a licensed reference (Trissel's, King Guide) before giving.",
-  typesT:"Browse by type",typesL:"Four ways drugs meet in IV therapy. Pick one to see every verified entry.",
-  t_Diluent:"Drug + diluent",t_Ysite:"Y-site",t_Admixture:"Admixture (same bag)",t_Syringe:"Syringe",
-  d_Diluent:"Which fluid to reconstitute or dilute in.",d_Ysite:"Two infusions meeting at the same line.",d_Admixture:"Two drugs mixed in one bag.",d_Syringe:"Two drugs drawn into one syringe.",
-  entries:"entries",checkT:"Pair checker",checkL:"Pick two drugs or fluids to see what the label says about giving them together.",
-  drugA:"Drug or fluid A",drugB:"Drug or fluid B",check:"Check",pickPh:"Start typing…",
-  noPair:"<b>No verified data for this pair.</b> That does not mean they are compatible. Check Trissel's, King Guide, or ask your pharmacist.",
-  needTwo:"Choose two items to check.",
-  dangerT:"High-risk incompatibilities",dangerL:"Combinations the labels warn against most strongly.",
-  browseT:"Browse all entries",browseL:"Filter by type and result, or search in any language.",
-  filterType:"Type",filterRes:"Result",all:"All",showing:"Showing {n} of {t}",
-  noRes:"<b>No verified entry for this search.</b> That does not mean compatible. Check a licensed reference or ask your pharmacist.",
-  drugsT:"Drugs & fluids A–Z",drugsL:"Open any item to see everything we have verified for it.",
-  back:"← All drugs",aka:"Also known as",nothing:"No entries.",
+ en:{navHome:"Chart",navBrowse:"All entries",navDrugs:"Drugs A–Z",navAbout:"Sources",
+  h1:"Can these two run together?",
+  lead:"Pick two drugs or fluids, or tap a square on the chart. Each answer comes from the official label and links to it.",
+  drugA:"First drug or fluid",drugB:"Second drug or fluid",pickPh:"Type a name, brand or abbreviation",
+  hint:"Choose both to see the answer.",
+  warn:"An empty square means we have no checked data, not that the pair is safe. Confirm with your pharmacist before giving.",
+  chartT:"Compatibility chart",chartS:"Tap a square",
+  noPair:"<strong>No checked data for this pair.</strong> That does not mean they are compatible. Ask your pharmacist or check Trissel's or King Guide.",
+  colRes:"Result",colPair:"Combination",colType:"How they meet",colNote:"What the label says",
+  t_Diluent:"Diluent",t_Ysite:"Y-site",t_Admixture:"Same bag",t_Syringe:"Same syringe",
+  d_Diluent:"fluid to dilute in",d_Ysite:"two lines meeting",d_Admixture:"mixed in one bag",d_Syringe:"drawn up together",
+  strongT:"The warnings that matter most",strongL:"Combinations that cause precipitation or loss of drug activity, per the label.",
+  typesT:"Look up by how drugs meet",
+  browseT:"All entries",browseL:"Every combination we have checked, with its source. Search in English or Indonesian.",
+  search:"Search",searchPh:"Drug, brand or fluid",typeL:"How they meet",resL:"Result",all:"All",
+  count:"{n} of {t} entries",
+  noRes:"<strong>Nothing found.</strong> No result here does not mean compatible. Try another spelling, or ask your pharmacist.",
+  drugsT:"Drugs and fluids A–Z",drugsL:"Open one to see everything checked for it.",entries:"entries",
+  back:"All drugs",aka:"Also searched as",
   source:"Source",S_C:"Compatible",S_I:"Incompatible",S_K:"Conditional",S_N:"Not established",
-  SD_C:"The label lists this combination as compatible.",SD_I:"The label says do not mix, or warns of precipitation or inactivation.",SD_K:"Allowed only under the specific conditions stated in the label.",SD_N:"The label says compatibility has not been tested or established.",
-  aboutT:"Sources & method",
-  aboutP1:"Every entry on this site was checked on 2 November 2026 against official prescribing information: US FDA labels (DailyMed and manufacturer sites), UK SmPCs (emc), the UK MHRA, and manufacturer medical information. Anything we could not trace to one of these sources was left out.",
-  aboutP2:"Rules can differ between brands and generics of the same drug. Piperacillin-tazobactam is a well-known example. Always check the label of the product you are holding, and the concentration you are using.",
-  aboutP3:"This site is not a substitute for a licensed compatibility reference or a pharmacist. Coverage is intentionally small so that every line is checkable.",
-  legendT:"What the results mean",srcT:"All sources",
-  footNote:"Free reference for IV compatibility, built from official drug labels. Not medical advice; confirm with a pharmacist before administration.",
-  footVerified:"Data verified 2 Nov 2026 · 46 entries · EN / ID"},
- id:{navHome:"Beranda",navCheck:"Cek pasangan",navBrowse:"Semua data",navDrugs:"Obat A–Z",navAbout:"Sumber & metode",
-  heroEyebrow:"Untuk perawat dan apoteker",heroTitle:"Cek kompatibilitas IV sebelum mencampur.",
-  heroLead:"Cari obat dan cairan IV, atau cek dua sekaligus. Setiap hasil ditautkan ke label resmi sumbernya.",
-  searchPh:"Cari obat, merek, atau cairan (mis. seftriakson, NaCl, Zosyn)",searchBtn:"Cari",tryLabel:"Coba:",
-  statEntries:"data terverifikasi",statDrugs:"obat & cairan",statSources:"sumber resmi",
-  heroCardT:"Isi situs",heroCardP:"Data obat + pelarut, Y-site, campuran dalam satu kantong, dan spuit dari label FDA dan SmPC Inggris.",
-  alert:"Hanya sebagai referensi. Pasangan yang tidak ada berarti “tidak ada data”, bukan “kompatibel”. Selalu konfirmasi dengan apoteker atau referensi berlisensi (Trissel's, King Guide) sebelum memberikan obat.",
-  typesT:"Telusuri berdasarkan jenis",typesL:"Empat cara obat bertemu dalam terapi IV. Pilih salah satu untuk melihat semua data terverifikasi.",
-  t_Diluent:"Obat + pelarut",t_Ysite:"Y-site",t_Admixture:"Campuran (satu kantong)",t_Syringe:"Spuit",
-  d_Diluent:"Cairan untuk rekonstitusi atau pengenceran.",d_Ysite:"Dua infus bertemu di satu jalur.",d_Admixture:"Dua obat dicampur dalam satu kantong.",d_Syringe:"Dua obat ditarik ke dalam satu spuit.",
-  entries:"data",checkT:"Cek pasangan",checkL:"Pilih dua obat atau cairan untuk melihat apa kata label tentang pemberian bersama.",
-  drugA:"Obat atau cairan A",drugB:"Obat atau cairan B",check:"Cek",pickPh:"Mulai ketik…",
-  noPair:"<b>Tidak ada data terverifikasi untuk pasangan ini.</b> Bukan berarti kompatibel. Periksa Trissel's, King Guide, atau tanyakan apoteker.",
-  needTwo:"Pilih dua item untuk dicek.",
-  dangerT:"Inkompatibilitas berisiko tinggi",dangerL:"Kombinasi yang paling keras diperingatkan oleh label.",
-  browseT:"Semua data",browseL:"Saring menurut jenis dan hasil, atau cari dalam bahasa apa pun.",
-  filterType:"Jenis",filterRes:"Hasil",all:"Semua",showing:"Menampilkan {n} dari {t}",
-  noRes:"<b>Tidak ada data terverifikasi untuk pencarian ini.</b> Bukan berarti kompatibel. Periksa referensi berlisensi atau tanyakan apoteker.",
-  drugsT:"Obat & cairan A–Z",drugsL:"Buka item mana pun untuk melihat semua data terverifikasinya.",
-  back:"← Semua obat",aka:"Nama lain",nothing:"Tidak ada data.",
+  SD_C:"The label lists the combination as compatible.",SD_I:"The label says do not mix, or warns of precipitation or loss of activity.",SD_K:"Allowed only under the conditions written in the label.",SD_N:"The label says compatibility has not been tested.",
+  aboutT:"Where the data comes from",
+  aboutP1:"Every entry was checked on 2 November 2026 against official prescribing information: US FDA labels, UK product characteristics (SmPC), the UK MHRA, and manufacturer medical information. Anything we could not trace to one of these was left out.",
+  aboutP2:"Rules can differ between brands and generics of the same drug; piperacillin-tazobactam is a known example. Check the label of the product in your hand and the concentration you are using.",
+  aboutP3:"This site is a quick reference, not a replacement for a licensed compatibility reference or your pharmacist. It covers a small number of drugs so that every line can be checked.",
+  legendT:"What the symbols mean",srcT:"Sources used",
+  footNote:"Free IV compatibility reference built from official drug labels, checked 2 November 2026. Not medical advice."},
+ id:{navHome:"Bagan",navBrowse:"Semua data",navDrugs:"Obat A–Z",navAbout:"Sumber",
+  h1:"Bolehkah keduanya diberikan bersama?",
+  lead:"Pilih dua obat atau cairan, atau ketuk kotak pada bagan. Setiap jawaban berasal dari label resmi dan ditautkan ke sumbernya.",
+  drugA:"Obat atau cairan pertama",drugB:"Obat atau cairan kedua",pickPh:"Ketik nama, merek, atau singkatan",
+  hint:"Pilih keduanya untuk melihat jawaban.",
+  warn:"Kotak kosong berarti kami belum punya data yang diperiksa, bukan berarti aman. Konfirmasi dengan apoteker sebelum memberikan obat.",
+  chartT:"Bagan kompatibilitas",chartS:"Ketuk sebuah kotak",
+  noPair:"<strong>Belum ada data untuk pasangan ini.</strong> Bukan berarti kompatibel. Tanyakan apoteker atau periksa Trissel's atau King Guide.",
+  colRes:"Hasil",colPair:"Kombinasi",colType:"Cara bertemu",colNote:"Isi label",
+  t_Diluent:"Pelarut",t_Ysite:"Y-site",t_Admixture:"Satu kantong",t_Syringe:"Satu spuit",
+  d_Diluent:"cairan pengencer",d_Ysite:"dua jalur bertemu",d_Admixture:"dicampur dalam satu kantong",d_Syringe:"ditarik bersama",
+  strongT:"Peringatan paling penting",strongL:"Kombinasi yang menyebabkan endapan atau hilangnya aktivitas obat, menurut label.",
+  typesT:"Cari berdasarkan cara bertemu",
+  browseT:"Semua data",browseL:"Setiap kombinasi yang sudah diperiksa, beserta sumbernya. Cari dalam bahasa Inggris atau Indonesia.",
+  search:"Cari",searchPh:"Obat, merek, atau cairan",typeL:"Cara bertemu",resL:"Hasil",all:"Semua",
+  count:"{n} dari {t} data",
+  noRes:"<strong>Tidak ditemukan.</strong> Tidak ada hasil bukan berarti kompatibel. Coba ejaan lain atau tanyakan apoteker.",
+  drugsT:"Obat dan cairan A–Z",drugsL:"Buka salah satu untuk melihat semua data yang sudah diperiksa.",entries:"data",
+  back:"Semua obat",aka:"Juga dicari sebagai",
   source:"Sumber",S_C:"Kompatibel",S_I:"Inkompatibel",S_K:"Bersyarat",S_N:"Belum terbukti",
-  SD_C:"Label menyatakan kombinasi ini kompatibel.",SD_I:"Label melarang pencampuran, atau memperingatkan endapan atau inaktivasi.",SD_K:"Hanya boleh dengan syarat khusus yang tertulis di label.",SD_N:"Label menyatakan kompatibilitas belum diuji atau belum terbukti.",
-  aboutT:"Sumber & metode",
-  aboutP1:"Setiap data di situs ini telah diperiksa pada 2 November 2026 terhadap informasi resep resmi: label FDA AS (DailyMed dan situs produsen), SmPC Inggris (emc), MHRA Inggris, dan informasi medis produsen. Data yang tidak dapat ditelusuri ke sumber tersebut tidak dimasukkan.",
-  aboutP2:"Aturan dapat berbeda antara merek dan generik dari obat yang sama, contohnya piperasilin-tazobaktam. Selalu periksa label produk yang Anda pegang dan konsentrasi yang digunakan.",
-  aboutP3:"Situs ini bukan pengganti referensi kompatibilitas berlisensi atau apoteker. Cakupan sengaja dibuat kecil agar setiap baris dapat diverifikasi.",
-  legendT:"Arti hasil",srcT:"Semua sumber",
-  footNote:"Referensi gratis kompatibilitas IV, disusun dari label obat resmi. Bukan nasihat medis; konfirmasi dengan apoteker sebelum pemberian.",
-  footVerified:"Data diverifikasi 2 Nov 2026 · 46 data · EN / ID"}
+  SD_C:"Label menyatakan kombinasi ini kompatibel.",SD_I:"Label melarang pencampuran, atau memperingatkan endapan atau hilangnya aktivitas.",SD_K:"Hanya boleh dengan syarat yang tertulis di label.",SD_N:"Label menyatakan kompatibilitas belum diuji.",
+  aboutT:"Asal data",
+  aboutP1:"Setiap data diperiksa pada 2 November 2026 terhadap informasi resep resmi: label FDA AS, ringkasan karakteristik produk Inggris (SmPC), MHRA Inggris, dan informasi medis produsen. Data yang tidak dapat ditelusuri ke sumber tersebut tidak dimasukkan.",
+  aboutP2:"Aturan dapat berbeda antara merek dan generik dari obat yang sama, contohnya piperasilin-tazobaktam. Periksa label produk yang Anda pegang dan konsentrasi yang digunakan.",
+  aboutP3:"Situs ini adalah referensi cepat, bukan pengganti referensi kompatibilitas berlisensi atau apoteker. Jumlah obat sengaja dibatasi agar setiap baris dapat diperiksa.",
+  legendT:"Arti simbol",srcT:"Sumber yang digunakan",
+  footNote:"Referensi kompatibilitas IV gratis dari label obat resmi, diperiksa 2 November 2026. Bukan nasihat medis."}
 };
-const TYPES=["Diluent","Y-site","Admixture","Syringe"];
-const TK=t=>t.replace("-","");
-const ICON={Diluent:'<path d="M8 3h8M9 3v6l-4 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-4-9V3"/>',"Y-site":'<path d="M6 3v6a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3M12 15v6"/>',Admixture:'<rect x="6" y="3" width="12" height="15" rx="3"/><path d="M6 10h12M12 18v3"/>',Syringe:'<path d="M18 2l4 4M15 5l4 4M3 21l4-4M7 17l9-9-3-3-9 9 3 3zM10 8l2 2"/>'};
-const svg=p=>`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const TYPES=["Diluent","Y-site","Admixture","Syringe"],TK=x=>x.replace("-","");
+const SYM={C:"✓",I:"✕",K:"!",N:"?"},RANK={I:4,K:3,N:2,C:1};
 const N=window.NAMES,S=window.SOURCES;
-const rows=window.ROWS.map(([type,a,b,s,src,en,id],i)=>({i,type,a,b,s,src,en,id,hay:(N[a].join(" ")+" "+N[b].join(" ")+" "+type).toLowerCase()}));
-let lang="en";try{lang=localStorage.getItem("ivlang")||(navigator.language||"").toLowerCase().startsWith("id")&&"id"||"en"}catch(e){}
-const t=k=>T[lang][k]||k;
-const nm=k=>lang==="id"?N[k][1]:N[k][0];
+const rows=window.ROWS.map(([type,a,b,s,src,en,id],i)=>({i,type,a,b,s,src,en,id,hay:(N[a].join(" ")+" "+N[b].join(" ")).toLowerCase()}));
+
+// Chart groups: data keys that roll up into one chart line
+const MX=[["ns","NaCl 0.9%","NaCl 0,9%"],["d5w","Dextrose 5%","Dekstrosa 5%"],["lr","Lactated Ringer's","Ringer laktat"],["ca","Calcium","Kalsium"],
+ ["ceftri"],["piptazo","Pip-tazo","Pip-tazo"],["aminog"],["panto"],["midaz"],["dexmed"],["ampho","Amphotericin B","Amfoterisin B"],["diaz"],["bicarb"],["phenytoin"],["filg"],["oxali"],["keto"],["morphine"]];
+const GROUP={chloride:["ns"],dexAll:["d5w"],d5_20:["d5w"],caDil:["lr","ca"],caIV:["ca"],caSol:["ca"],ambisome:["ampho"],amphoB:["ampho"],tobra:["aminog"],amigent:["aminog"]};
+const G=k=>GROUP[k]||[k];
+const hit=(r,x,y)=>(G(r.a).includes(x)&&G(r.b).includes(y))||(G(r.a).includes(y)&&G(r.b).includes(x));
+
+let lang="en";try{lang=localStorage.getItem("ivlang")||((navigator.language||"").toLowerCase().startsWith("id")?"id":"en")}catch(e){}
+const t=k=>T[lang][k]??k, nm=k=>lang==="id"?N[k][1]:N[k][0];
+const mxName=m=>m[1]?(lang==="id"?m[2]:m[1]):nm(m[0]);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const app=document.getElementById("app");
-let browseState={q:"",type:"all",s:"all"};
+let bs={q:"",type:"all",s:"all"};
 
-function card(r){
-  return `<article class="res s-${r.s}"><span class="pill p-${r.s}">${t("S_"+r.s)}</span><div>
-  <div class="pair"><a href="#drug-${r.a}">${esc(nm(r.a))}</a><span class="x">+</span>${N[r.b][3]==="other"?esc(nm(r.b)):`<a href="#drug-${r.b}">${esc(nm(r.b))}</a>`}<span class="tag">${t("t_"+TK(r.type))}</span></div>
-  <p class="note">${esc(lang==="id"?r.id:r.en)}</p>
-  <div class="src">${t("source")}: ${r.src.map(k=>`<a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a>`).join(" · ")}</div></div></article>`;
+const link=k=>N[k][3]==="other"?esc(nm(k)):`<a href="#drug-${k}">${esc(nm(k))}</a>`;
+function table(list,{type=true}={}){
+  return `<div class="tbl-scroll"><table class="rtable"><thead><tr><th>${t("colRes")}</th><th>${t("colPair")}</th>${type?`<th>${t("colType")}</th>`:""}<th>${t("colNote")}</th></tr></thead><tbody>${
+  list.map(r=>`<tr><td><span class="res ${r.s}"><span class="sym ${r.s}" aria-hidden="true">${SYM[r.s]}</span>${t("S_"+r.s)}</span></td>
+  <td class="pr">${link(r.a)}<span class="and">+</span>${link(r.b)}</td>${type?`<td class="kind">${t("t_"+TK(r.type))}</td>`:""}
+  <td><p class="nt">${esc(lang==="id"?r.id:r.en)}</p><div class="sr">${t("source")}: ${r.src.map(k=>`<a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a>`).join("; ")}</div></td></tr>`).join("")}</tbody></table></div>`;
 }
-function tokens(q){return q.toLowerCase().split(/[\s,+/]+|\band\b|\bdan\b|\bwith\b|\bdengan\b|\bvs\b/).map(x=>x.trim()).filter(x=>x.length>1)}
-function search(q,type,s){const tk=tokens(q);return rows.filter(r=>(type==="all"||r.type===type)&&(s==="all"||r.s===s)&&tk.every(x=>r.hay.includes(x)))}
-const alertHTML=`<div class="alert">${svg('<path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5M12 18h.01"/>')}<span>${t("alert")}</span></div>`;
+const tok=q=>q.toLowerCase().split(/[\s,+/]+|\band\b|\bdan\b|\bwith\b|\bdengan\b/).map(x=>x.trim()).filter(x=>x.length>1);
+const find=(q,ty,s)=>{const k=tok(q);return rows.filter(r=>(ty==="all"||r.type===ty)&&(s==="all"||r.s===s)&&k.every(x=>r.hay.includes(x)))};
 
-function picker(id,ph){return `<div class="field"><label for="${id}">${ph}</label><input id="${id}" autocomplete="off" placeholder="${t("pickPh")}"><div class="sug" id="${id}-s" hidden></div></div>`}
+/* pickers */
+function picker(id,label){return `<div class="field"><label for="${id}">${label}</label><input id="${id}" autocomplete="off" placeholder="${t("pickPh")}"><div class="sug" id="${id}-s" hidden></div></div>`}
 function bindPicker(id){
-  const inp=document.getElementById(id),box=document.getElementById(id+"-s");
-  const keys=Object.keys(N);
-  const show=()=>{const q=inp.value.toLowerCase().trim();
-    const m=keys.filter(k=>!q||N[k].join(" ").toLowerCase().includes(q)).sort((a,b)=>nm(a).localeCompare(nm(b))).slice(0,12);
+  const inp=document.getElementById(id),box=document.getElementById(id+"-s"),keys=Object.keys(N).filter(k=>N[k][3]!=="other");
+  const show=()=>{const q=inp.value.toLowerCase().trim();const m=keys.filter(k=>!q||N[k].slice(0,3).join(" ").toLowerCase().includes(q)).sort((a,b)=>nm(a).localeCompare(nm(b))).slice(0,10);
     box.innerHTML=m.map(k=>`<button type="button" data-k="${k}">${esc(nm(k))}</button>`).join("");box.hidden=!m.length};
-  inp.addEventListener("focus",show);inp.addEventListener("input",()=>{inp.dataset.k="";show()});
-  box.addEventListener("mousedown",e=>{const b=e.target.closest("button");if(!b)return;e.preventDefault();inp.value=nm(b.dataset.k);inp.dataset.k=b.dataset.k;box.hidden=true;runCheck()});
-  inp.addEventListener("blur",()=>setTimeout(()=>box.hidden=true,120));
+  inp.onfocus=show;inp.oninput=()=>{inp.dataset.k="";show();check()};
+  box.onmousedown=e=>{const b=e.target.closest("button");if(!b)return;e.preventDefault();inp.value=nm(b.dataset.k);inp.dataset.k=b.dataset.k;box.hidden=true;check()};
+  inp.onblur=()=>setTimeout(()=>box.hidden=true,120);
 }
-function resolve(inp){if(inp.dataset.k)return inp.dataset.k;const q=inp.value.toLowerCase().trim();if(!q)return"";const k=Object.keys(N).find(k=>N[k].join(" ").toLowerCase().split(/\s+/).includes(q)||nm(k).toLowerCase()===q)||Object.keys(N).find(k=>N[k].join(" ").toLowerCase().includes(q));return k||""}
-function runCheck(){
-  const a=document.getElementById("pa"),b=document.getElementById("pb"),out=document.getElementById("verdict");if(!a)return;
-  const ka=resolve(a),kb=resolve(b);
-  if(!ka||!kb){out.innerHTML=`<div class="empty">${t("needTwo")}</div>`;return}
-  const hit=rows.filter(r=>(r.a===ka&&r.b===kb)||(r.a===kb&&r.b===ka));
-  out.innerHTML=hit.length?hit.map(card).join(""):`<div class="empty">${t("noPair")}</div>`;
+function resolve(inp){if(inp.dataset.k)return inp.dataset.k;const q=inp.value.toLowerCase().trim();if(q.length<2)return"";const ks=Object.keys(N);
+  return ks.find(k=>nm(k).toLowerCase()===q||N[k][2].split(" ").includes(q))||ks.find(k=>N[k].slice(0,3).join(" ").toLowerCase().includes(q))||""}
+function check(){
+  const out=document.getElementById("verdict");if(!out)return;
+  const ka=resolve(document.getElementById("pa")),kb=resolve(document.getElementById("pb"));
+  document.querySelectorAll(".mx button.sel").forEach(b=>b.classList.remove("sel"));
+  if(!ka||!kb){out.innerHTML=`<p class="hint">${t("hint")}</p>`;return}
+  const ga=G(ka),gb=G(kb);
+  const list=rows.filter(r=>(r.a===ka&&r.b===kb)||(r.a===kb&&r.b===ka)||ga.some(x=>gb.some(y=>hit(r,x,y))));
+  const uniq=[...new Set(list)];
+  out.innerHTML=uniq.length?table(uniq,{type:true}):`<div class="empty">${t("noPair")}</div>`;
 }
-function checkerHTML(){return `<div class="checker"><div class="pairin">${picker("pa",t("drugA"))}<span class="plus">+</span>${picker("pb",t("drugB"))}<button class="btn" id="pgo">${t("check")}</button></div><div class="verdict" id="verdict"></div></div>`}
-function bindChecker(pre){bindPicker("pa");bindPicker("pb");document.getElementById("pgo").onclick=runCheck;
-  if(pre){const a=document.getElementById("pa"),b=document.getElementById("pb");a.value=nm(pre[0]);a.dataset.k=pre[0];b.value=nm(pre[1]);b.dataset.k=pre[1];runCheck()}}
+function setPair(x,y,list){
+  const a=document.getElementById("pa"),b=document.getElementById("pb");
+  const mx=id=>MX.find(m=>m[0]===id);
+  a.value=mxName(mx(x));a.dataset.k=N[x]?x:"";b.value=mxName(mx(y));b.dataset.k=N[y]?y:"";
+  document.getElementById("verdict").innerHTML=list.length?table(list):`<div class="empty">${t("noPair")}</div>`;
+}
 
-const views={
+/* chart */
+function chart(){
+  let h=`<div class="mx-scroll"><table class="mx" role="grid"><thead><tr><th></th>${MX.map((m,j)=>`<th class="col" data-c="${j}"><div>${esc(mxName(m))}</div></th>`).join("")}</tr></thead><tbody>`;
+  MX.forEach((r,i)=>{h+=`<tr><th class="row" scope="row">${esc(mxName(r))}</th>`;
+    MX.forEach((c,j)=>{
+      if(j>i){h+=`<td class="blank"></td>`;return}
+      if(i===j){h+=`<td class="diag" aria-hidden="true"></td>`;return}
+      const list=rows.filter(x=>hit(x,r[0],c[0]));
+      const s=list.reduce((w,x)=>!w||RANK[x.s]>RANK[w]?x.s:w,"");
+      h+=`<td><button class="${s||"none"}" data-x="${r[0]}" data-y="${c[0]}" data-j="${j}" aria-label="${esc(mxName(r))} + ${esc(mxName(c))}: ${s?t("S_"+s):"—"}">${s?SYM[s]:""}</button></td>`});
+    h+=`</tr>`});
+  return h+`</tbody></table></div><div class="key">${["I","K","N","C"].map(s=>`<span><span class="sym ${s}">${SYM[s]}</span>${t("S_"+s)}</span>`).join("")}</div>`;
+}
+function bindChart(){
+  app.querySelectorAll(".mx td button").forEach(b=>{
+    b.onclick=()=>{const list=rows.filter(x=>hit(x,b.dataset.x,b.dataset.y));setPair(b.dataset.x,b.dataset.y,list);
+      app.querySelectorAll(".mx button.sel").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");
+      if(innerWidth<980)document.getElementById("checker").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"})};
+    b.onmouseenter=()=>{app.querySelectorAll(".mx th.col").forEach(th=>th.classList.toggle("hl",th.dataset.c===b.dataset.j))};
+  });
+}
+
+const V={
  home(){
-  const items=Object.keys(N).length,srcs=Object.keys(S).length;
-  const danger=[10,1,7,4,22,17].map(i=>rows[i]);
-  app.innerHTML=`<div class="view">
-  <section class="hero"><div class="sec">
-   <div><p class="eyebrow">${t("heroEyebrow")}</p><h1>${t("heroTitle")}</h1><p>${t("heroLead")}</p>
-    <form class="hero-search" id="hs"><input id="hq" type="search" placeholder="${t("searchPh")}" aria-label="${t("searchBtn")}"><button class="btn">${svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>')}${t("searchBtn")}</button></form>
-    <div class="quick">${t("tryLabel")} ${["ceftriaxone calcium","phenytoin","NS","ketorolac","Zosyn"].map(q=>`<button type="button" data-q="${q}">${q}</button>`).join("")}</div></div>
-   <div class="hero-card"><h3>${t("heroCardT")}</h3><p>${t("heroCardP")}</p>
-    <div class="stats"><div class="stat"><b>${rows.length}</b><span>${t("statEntries")}</span></div><div class="stat"><b>${items}</b><span>${t("statDrugs")}</span></div><div class="stat"><b>${srcs}</b><span>${t("statSources")}</span></div></div></div>
-  </div></section>
-  <div class="alert-wrap">${alertHTML}</div>
-  <section class="sec"><p class="eyebrow">${t("navCheck")}</p><h2>${t("checkT")}</h2><p class="lead">${t("checkL")}</p>${checkerHTML()}</section>
-  <section class="sec" style="padding-top:0"><h2>${t("typesT")}</h2><p class="lead">${t("typesL")}</p>
-   <div class="grid4">${TYPES.map(ty=>`<a class="tcard" href="#browse" data-type="${ty}"><span class="ic">${svg(ICON[ty])}</span><h3>${t("t_"+TK(ty))}</h3><p>${t("d_"+TK(ty))}</p><span class="n">${rows.filter(r=>r.type===ty).length} ${t("entries")}</span></a>`).join("")}</div></section>
-  <section class="sec" style="padding-top:0"><h2>${t("dangerT")}</h2><p class="lead">${t("dangerL")}</p><div class="list">${danger.map(card).join("")}</div></section></div>`;
-  document.getElementById("hs").onsubmit=e=>{e.preventDefault();browseState={q:document.getElementById("hq").value,type:"all",s:"all"};go("browse")};
-  app.querySelectorAll(".quick button").forEach(b=>b.onclick=()=>{browseState={q:b.dataset.q,type:"all",s:"all"};go("browse")});
-  app.querySelectorAll(".tcard").forEach(a=>a.onclick=()=>{browseState={q:"",type:a.dataset.type,s:"all"}});
-  bindChecker(["ceftri","caIV"]);
+  const strong=[10,1,7,4,22,17].map(i=>rows[i]);
+  app.innerHTML=`<div class="wrap page"><div class="home-grid">
+   <div class="intro"><h1>${t("h1")}</h1><p class="lead">${t("lead")}</p>
+    <div class="checker" id="checker"><div class="pairin">${picker("pa",t("drugA"))}${picker("pb",t("drugB"))}</div><div class="verdict" id="verdict"></div></div>
+    <p class="warnline">${t("warn")}</p></div>
+   <div class="chart"><div class="chart-head"><h3>${t("chartT")}</h3><span>${t("chartS")}</span></div>${chart()}</div>
+  </div>
+  <section class="section"><h2>${t("strongT")}</h2><p class="lead" style="margin-bottom:20px">${t("strongL")}</p>${table(strong)}</section>
+  <section class="section"><h2>${t("typesT")}</h2><div class="typerow">${TYPES.map(ty=>`<a href="#browse" data-type="${ty}">${t("t_"+TK(ty))}<small>${t("d_"+TK(ty))}, ${rows.filter(r=>r.type===ty).length}</small></a>`).join("")}</div></section></div>`;
+  bindPicker("pa");bindPicker("pb");bindChart();check();
+  app.querySelectorAll(".typerow a").forEach(a=>a.onclick=()=>{bs={q:"",type:a.dataset.type,s:"all"}});
  },
- check(){app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navCheck")}</p><h2>${t("checkT")}</h2><p class="lead">${t("checkL")}</p>${checkerHTML()}<div style="margin-top:24px">${alertHTML}</div></section></div>`;bindChecker()},
  browse(){
-  const opts=(name,list,cur)=>[["all",t("all")],...list].map(([v,l])=>`<label class="opt"><input type="radio" name="${name}" value="${v}" ${cur===v?"checked":""}> ${l}<span class="c" data-c="${name}:${v}"></span></label>`).join("");
-  app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navBrowse")}</p><h2>${t("browseT")}</h2><p class="lead">${t("browseL")}</p>
-  <div class="browse"><aside class="side"><div><h4>${t("filterType")}</h4>${opts("ft",TYPES.map(x=>[x,t("t_"+TK(x))]),browseState.type)}</div><div><h4>${t("filterRes")}</h4>${opts("fs",["I","C","K","N"].map(x=>[x,t("S_"+x)]),browseState.s)}</div></aside>
-  <div class="list"><div class="bar"><input id="bq" type="search" placeholder="${t("searchPh")}" value="${esc(browseState.q)}"><span class="count" id="bc"></span></div>${alertHTML}<div class="list" id="bl"></div></div></div></section></div>`;
-  const draw=()=>{const h=search(browseState.q,browseState.type,browseState.s);
-   document.getElementById("bc").textContent=t("showing").replace("{n}",h.length).replace("{t}",rows.length);
-   document.getElementById("bl").innerHTML=h.length?h.map(card).join(""):`<div class="empty">${t("noRes")}</div>`;
-   app.querySelectorAll("[data-c]").forEach(el=>{const[f,v]=el.dataset.c.split(":");el.textContent=f==="ft"?search(browseState.q,v,browseState.s).length:search(browseState.q,browseState.type,v).length})};
-  document.getElementById("bq").oninput=e=>{browseState.q=e.target.value;draw()};
-  app.querySelectorAll("input[name=ft]").forEach(r=>r.onchange=()=>{browseState.type=r.value;draw()});
-  app.querySelectorAll("input[name=fs]").forEach(r=>r.onchange=()=>{browseState.s=r.value;draw()});
+  const seg=(id,label,opts,cur)=>`<div class="seg"><span>${label}</span><div id="${id}">${[["all",t("all")],...opts].map(([v,l])=>`<button type="button" data-v="${v}" class="${cur===v?"on":""}">${l}</button>`).join("")}</div></div>`;
+  app.innerHTML=`<div class="wrap page"><h1>${t("browseT")}</h1><p class="lead">${t("browseL")}</p>
+   <div class="browse-tools"><div class="field"><label for="bq">${t("search")}</label><input id="bq" type="search" placeholder="${t("searchPh")}" value="${esc(bs.q)}"></div>
+   ${seg("ft",t("typeL"),TYPES.map(x=>[x,t("t_"+TK(x))]),bs.type)}${seg("fs",t("resL"),["I","K","N","C"].map(x=>[x,t("S_"+x)]),bs.s)}</div>
+   <p class="count" id="bc"></p><div id="bl"></div></div>`;
+  const draw=()=>{const h=find(bs.q,bs.type,bs.s);document.getElementById("bc").textContent=t("count").replace("{n}",h.length).replace("{t}",rows.length);
+   document.getElementById("bl").innerHTML=h.length?table(h):`<div class="empty">${t("noRes")}</div>`};
+  document.getElementById("bq").oninput=e=>{bs.q=e.target.value;draw()};
+  ["ft","fs"].forEach(id=>document.getElementById(id).onclick=e=>{const b=e.target.closest("button");if(!b)return;
+   if(id==="ft")bs.type=b.dataset.v;else bs.s=b.dataset.v;document.querySelectorAll(`#${id} button`).forEach(x=>x.classList.toggle("on",x===b));draw()});
   draw();
  },
  drugs(){
-  const keys=Object.keys(N).filter(k=>N[k][3]!=="other").sort((a,b)=>nm(a).localeCompare(nm(b)));let last="",html="";
-  keys.forEach(k=>{const L=nm(k)[0].toUpperCase();if(L!==last){html+=`<div class="letter">${L}</div>`;last=L}
-   const rs=rows.filter(r=>r.a===k||r.b===k),ci=rs.filter(r=>r.s==="I").length,cc=rs.filter(r=>r.s==="C").length;
-   html+=`<a class="dcard" href="#drug-${k}"><div><b>${esc(nm(k))}</b><small>${rs.length} ${t("entries")}</small></div><span class="badges">${ci?`<span class="dot p-I" title="${t("S_I")}">${ci}</span>`:""}${cc?`<span class="dot p-C" title="${t("S_C")}">${cc}</span>`:""}</span></a>`});
-  app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navDrugs")}</p><h2>${t("drugsT")}</h2><p class="lead">${t("drugsL")}</p><div class="az">${html}</div></section></div>`;
+  const ks=Object.keys(N).filter(k=>N[k][3]!=="other").sort((a,b)=>nm(a).localeCompare(nm(b)));
+  const by={};ks.forEach(k=>{const L=nm(k)[0].toUpperCase();(by[L]=by[L]||[]).push(k)});
+  app.innerHTML=`<div class="wrap page"><h1>${t("drugsT")}</h1><p class="lead">${t("drugsL")}</p><div class="az">${Object.keys(by).map(L=>`<div class="az-l"><h3>${L}</h3>${by[L].map(k=>`<a href="#drug-${k}"><span>${esc(nm(k))}</span><small>${rows.filter(r=>r.a===k||r.b===k).length}</small></a>`).join("")}</div>`).join("")}</div></div>`;
  },
  drug(k){
-  if(!N[k]){go("drugs");return}
+  if(!N[k])return go("drugs");
   const rs=rows.filter(r=>r.a===k||r.b===k);
-  const aliases=N[k][2].split(" ").filter(w=>w.length>2&&!nm(k).toLowerCase().includes(w)).slice(0,6).join(", ");
-  app.innerHTML=`<div class="view"><section class="sec"><a class="crumb" href="#drugs">${t("back")}</a>
-  <div class="dhead"><div><h1>${esc(nm(k))}</h1>${aliases?`<p class="alias">${t("aka")}: ${esc(aliases)}</p>`:""}</div><a class="btn ghost" href="#check">${t("navCheck")} →</a></div>
-  ${alertHTML}<div style="height:28px"></div>
-  ${TYPES.map(ty=>{const g=rs.filter(r=>r.type===ty);return g.length?`<div class="group"><h3><span class="tcard-ic">${svg(ICON[ty])}</span>${t("t_"+TK(ty))}</h3><div class="list">${g.map(card).join("")}</div></div>`:""}).join("")||`<div class="empty">${t("nothing")}</div>`}
-  </section></div>`;
+  const al=[...new Set(N[k][2].split(" "))].filter(w=>w.length>2&&!nm(k).toLowerCase().includes(w)).slice(0,6).join(", ");
+  const tally=["I","K","N","C"].map(s=>[s,rs.filter(r=>r.s===s).length]).filter(x=>x[1]);
+  app.innerHTML=`<div class="wrap page"><a class="back" href="#drugs">${t("back")}</a>
+   <div class="dhead"><div><h1>${esc(nm(k))}</h1>${al?`<p>${t("aka")}: ${esc(al)}</p>`:""}</div><div class="tally">${tally.map(([s,n])=>`<span><span class="sym ${s}">${SYM[s]}</span>${n}</span>`).join("")}</div></div>
+   ${TYPES.map(ty=>{const g=rs.filter(r=>r.type===ty);return g.length?`<div class="group"><h3>${t("t_"+TK(ty))}</h3>${table(g,{type:false})}</div>`:""}).join("")}</div>`;
  },
  about(){
-  app.innerHTML=`<div class="view"><section class="sec"><p class="eyebrow">${t("navAbout")}</p><h2>${t("aboutT")}</h2>
-  <div class="about"><div><p>${t("aboutP1")}</p><p>${t("aboutP2")}</p><p>${t("aboutP3")}</p>
-   <h3>${t("srcT")}</h3><ul class="srclist">${Object.values(S).map(([l,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(l)}</a></li>`).join("")}</ul></div>
-  <div><h3 style="margin-top:0">${t("legendT")}</h3><div class="legend">${["C","I","K","N"].map(s=>`<div><span class="pill p-${s}">${t("S_"+s)}</span><p>${t("SD_"+s)}</p></div>`).join("")}</div></div></div></section></div>`;
+  app.innerHTML=`<div class="wrap page"><h1>${t("aboutT")}</h1><div class="about"><div><p>${t("aboutP1")}</p><p>${t("aboutP2")}</p><p>${t("aboutP3")}</p>
+   <h3 style="margin-top:28px">${t("srcT")}</h3><ul class="srcs">${Object.values(S).map(([l,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(l)}</a></li>`).join("")}</ul></div>
+   <div><h3 style="margin-bottom:12px">${t("legendT")}</h3><div class="legend">${["I","K","N","C"].map(s=>`<div><span class="sym ${s}">${SYM[s]}</span><div><b>${t("S_"+s)}</b><p>${t("SD_"+s)}</p></div></div>`).join("")}</div></div></div></div>`;
  }
 };
 function go(h){if(location.hash==="#"+h)route();else location.hash=h}
 function route(){
   const h=(location.hash||"#home").slice(1);
-  document.getElementById("links").classList.remove("open");
-  document.querySelectorAll(".links a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+(h.startsWith("drug-")?"drugs":h)));
-  if(h.startsWith("drug-"))views.drug(h.slice(5));else(views[h]||views.home)();
-  window.scrollTo(0,0);
+  document.getElementById("links").classList.remove("open");document.getElementById("burger").setAttribute("aria-expanded","false");
+  document.querySelectorAll(".links a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+(h.startsWith("drug-")?"drugs":(V[h]?h:"home"))));
+  if(h.startsWith("drug-"))V.drug(h.slice(5));else(V[h]||V.home)();
+  scrollTo(0,0);
 }
-function applyLang(){
-  document.documentElement.lang=lang;
-  document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
-  document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
-}
+function applyLang(){document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang))}
 document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;try{localStorage.setItem("ivlang",lang)}catch(e){}applyLang();route()});
-const bg=document.getElementById("burger");bg.onclick=()=>{const o=document.getElementById("links").classList.toggle("open");bg.setAttribute("aria-expanded",o)};
-window.addEventListener("hashchange",route);
-applyLang();route();
+const bg=document.getElementById("burger");bg.onclick=()=>bg.setAttribute("aria-expanded",document.getElementById("links").classList.toggle("open"));
+addEventListener("hashchange",route);applyLang();route();
 })();
