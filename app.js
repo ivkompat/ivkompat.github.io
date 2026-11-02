@@ -23,7 +23,7 @@ const T={
   colRes:"Result",colPair:"Combination",colType:"Type",colNote:"Details",
   drugsT:"Drugs and fluids A–Z",drugsP:"Select a drug to see every combination checked for it.",
   filterPh:"Filter by name",colName:"Name",colAlt:"Indonesian name",colN:"Entries",colI:"Incompatible",colC:"Compatible",
-  combined:"Combined with",reference:"Reference",sumAgree:"{n} references found. All say: {s}.",sumDisagree:"{n} references found and they differ ({s}). Use the most cautious result and check with the pharmacy.",rt_label:"Official drug label",rt_chart:"Hospital chart",rt_mfr:"Manufacturer testing",rt_study:"Clinical study",aka:"Also searched as",
+  combined:"Combined with",reference:"Reference",common:"Common checks:",sumAgree:"{n} references found. All say: {s}.",sumDisagree:"{n} references found and they differ ({s}). Use the most cautious result and check with the pharmacy.",rt_label:"Official drug label",rt_chart:"Hospital chart",rt_mfr:"Manufacturer testing",rt_study:"Clinical study",aka:"Also searched as",
   home:"Home",about:"About this entry",type:"Type",result:"Result",checked:"Last checked",
   checkedDate:"2 November 2026",otherFor:"Other entries for",openDrug:"Open drug page",
   S_C:"Compatible",S_I:"Incompatible",S_K:"Conditional",S_N:"Not established",S_D:"Conflicting data",SD_D:"Sources disagree. Check with the pharmacy before giving together.",
@@ -51,7 +51,7 @@ const T={
   colRes:"Hasil",colPair:"Kombinasi",colType:"Jenis",colNote:"Keterangan",
   drugsT:"Obat dan cairan A–Z",drugsP:"Pilih obat untuk melihat semua kombinasi yang sudah diperiksa.",
   filterPh:"Saring nama",colName:"Nama",colAlt:"Nama Inggris",colN:"Data",colI:"Inkompatibel",colC:"Kompatibel",
-  combined:"Dikombinasikan dengan",reference:"Referensi",sumAgree:"{n} referensi ditemukan. Semua menyatakan: {s}.",sumDisagree:"{n} referensi ditemukan dan hasilnya berbeda ({s}). Gunakan hasil yang paling hati-hati dan konfirmasi dengan farmasi.",rt_label:"Label obat resmi",rt_chart:"Bagan rumah sakit",rt_mfr:"Uji produsen",rt_study:"Studi klinis",aka:"Juga dicari sebagai",
+  combined:"Dikombinasikan dengan",reference:"Referensi",common:"Cek yang sering dipakai:",sumAgree:"{n} referensi ditemukan. Semua menyatakan: {s}.",sumDisagree:"{n} referensi ditemukan dan hasilnya berbeda ({s}). Gunakan hasil yang paling hati-hati dan konfirmasi dengan farmasi.",rt_label:"Label obat resmi",rt_chart:"Bagan rumah sakit",rt_mfr:"Uji produsen",rt_study:"Studi klinis",aka:"Juga dicari sebagai",
   home:"Beranda",about:"Tentang data ini",type:"Jenis",result:"Hasil",checked:"Terakhir diperiksa",
   checkedDate:"2 November 2026",otherFor:"Data lain untuk",openDrug:"Buka halaman obat",
   S_C:"Kompatibel",S_I:"Inkompatibel",S_K:"Bersyarat",S_N:"Belum terbukti",S_D:"Data bertentangan",SD_D:"Sumber saling bertentangan. Konfirmasi dengan farmasi sebelum diberikan bersama.",
@@ -66,6 +66,8 @@ const GR={imipen:["betalact"],amoxclav:["betalact"],ampisulb:["betalact"],cagluc
   ceftri:["betalact"],piptazo:["betalact"],mero:["betalact"],erta:["betalact"]};
 const ov=(rowKey,sel)=>rowKey===sel||(GR[rowKey]||[]).includes(sel)||(GR[sel]||[]).includes(rowKey);
 const GENERAL=["anyDrug","anyPN","anyLine"];
+const QUICK=[["ceftri","cagluc"],["vanco","piptazo"],["phenytoin","d5w"],["amio","hep"],["insulin","dobut"],["mero","smof"]];
+const HIDE=["aminog","betalact","amigent"];
 const FLUIDS=["ns","d5w","lr","plyte","caSol"];
 const ICON={Diluent:'<path d="M8 3h8M9 3v6l-4 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-4-9V3"/>',"Y-site":'<path d="M6 3v6a6 6 0 0 0 12 0V3M12 15v6"/>',Admixture:'<rect x="6" y="3" width="12" height="15" rx="3"/><path d="M6 10h12M12 18v3"/>',Syringe:'<path d="M18 2l4 4M15 5l4 4M3 21l4-4M7 17l9-9-3-3-9 9 3 3z"/>'};
 const svg=(p,s=22)=>`<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
@@ -94,17 +96,17 @@ function verdict(r){
   <p class="vtype">${t("t_"+TK(r.type))}: ${t("d_"+TK(r.type))}</p>
   <p class="vnote">${esc(note(r))}</p></div>${refBlock(r)}</article>`;
 }
-function rowsTable(list,{hideA,match}={}){
-  return `<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colRes")}</th><th>${hideA?t("combined"):t("colPair")}</th><th>${t("colType")}</th><th>${t("colNote")}</th><th>${t("reference")}</th><th></th></tr></thead><tbody>${
+function rowsTable(list,{hideA,match,noType}={}){
+  return `<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colRes")}</th><th>${hideA?t("combined"):t("colPair")}</th>${noType?"":`<th>${t("colType")}</th>`}<th>${t("colNote")}</th><th>${t("reference")}</th><th></th></tr></thead><tbody>${
    list.length?list.map(r=>{const otherK=hideA?((match?ov(r.a,hideA):r.a===hideA)?r.b:r.a):null;
-    return `<tr data-go="e-${r.i}"><td>${pill(r.s)}</td><td class="p">${hideA?esc(nm(otherK)):`${esc(nm(r.a))}<span class="x">+</span>${esc(nm(r.b))}`}</td><td class="m">${t("t_"+TK(r.type))}</td><td class="note">${esc(note(r))}</td><td class="refc">${refCell(r)}</td><td class="chev">›</td></tr>`}).join("")
+    return `<tr data-go="e-${r.i}" tabindex="0"><td class="res-c">${pill(r.s)}${noType?"":`<span class="m-type">${t("t_"+TK(r.type))}</span>`}</td><td class="p">${hideA?esc(nm(otherK)):`${esc(nm(r.a))}<span class="x">+</span>${esc(nm(r.b))}`}</td>${noType?"":`<td class="m">${t("t_"+TK(r.type))}</td>`}<td class="note">${esc(note(r))}</td><td class="refc">${refCell(r)}</td><td class="chev">›</td></tr>`}).join("")
    :`<tr class="empty-row"><td colspan="6">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;
 }
-function bindRows(root=app){root.querySelectorAll("tr[data-go]").forEach(tr=>tr.onclick=e=>{if(e.target.closest("a"))return;location.hash=tr.dataset.go})}
+function bindRows(root=app){root.querySelectorAll("tr[data-go]").forEach(tr=>{tr.onclick=e=>{if(e.target.closest("a"))return;location.hash=tr.dataset.go};tr.onkeydown=e=>{if(e.key==="Enter")location.hash=tr.dataset.go}})}
 
 /* ---------- Pair checker ---------- */
 function options(sel){
-  const drugs=Object.keys(N).filter(k=>N[k][3]==="drug").sort((a,b)=>nm(a).localeCompare(nm(b)));
+  const drugs=Object.keys(N).filter(k=>N[k][3]==="drug"&&!HIDE.includes(k)).sort((a,b)=>nm(a).localeCompare(nm(b)));
   const o=k=>`<option value="${k}"${k===sel?" selected":""}>${esc(nm(k))}</option>`;
   return `<option value="">${t("choose")}</option><optgroup label="${t("gFluids")}">${FLUIDS.map(o).join("")}</optgroup><optgroup label="${t("gDrugs")}">${drugs.map(o).join("")}</optgroup>`;
 }
@@ -134,6 +136,7 @@ function renderPair(out){
   if(!pair.a||!pair.b||pair.a===pair.b){el.innerHTML="";hint.textContent=t("pickBoth");if(sec)sec.hidden=true;return}
   if(sec)sec.hidden=false;
   hint.textContent=`${nm(pair.a)} + ${nm(pair.b)}`;
+  if(innerWidth<760)setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),50);
   const {direct,general}=lookup(pair.a,pair.b);
   let h=`<p class="rgroup">${t("direct")}</p>`;
   if(direct.length>1){const st=[...new Set(direct.map(r=>r.s))],refs=new Set(direct.flatMap(r=>r.src));
@@ -146,15 +149,16 @@ function renderPair(out){
 /* ---------- Views ---------- */
 const V={
  home(){
-  const drugs=Object.keys(N).filter(k=>N[k][3]==="drug"||FLUIDS.includes(k)).length;
+  const drugs=Object.keys(N).filter(k=>(N[k][3]==="drug"&&!HIDE.includes(k))||FLUIDS.includes(k)).length;
   const keyRows=rows.filter(r=>r.s==="I"&&["ceftri","phenytoin","oxali","ambisome","filg","piptazo","levo","vanco"].includes(r.a)&&!GENERAL.includes(r.b));
   const pick=[];["ceftri","phenytoin","oxali","ambisome","piptazo","vanco","levo","filg"].forEach(a=>{const r=keyRows.find(x=>x.a===a);if(r)pick.push(r)});
-  app.innerHTML=`<section class="hero"><div class="wrap"><h1>${t("heroT")}</h1><p>${t("heroP")}</p>${selectorHTML()}</div></section>
+  app.innerHTML=`<section class="hero"><div class="wrap"><h1>${t("heroT")}</h1><p>${t("heroP")}</p>${selectorHTML()}<div class="quick"><span>${t("common")}</span>${QUICK.map(([a,b])=>`<button type="button" data-a="${a}" data-b="${b}">${esc(nm(a))} + ${esc(nm(b))}</button>`).join("")}</div></div></section>
   <div class="wrap"><section class="section" id="hsec" hidden><div class="results" id="hres"></div></section>
   <section class="section"><div class="stats"><div class="stat"><b>${rows.length}</b><span>${t("statE")}</span></div><div class="stat"><b>${drugs}</b><span>${t("statD")}</span></div><div class="stat"><b>${Object.keys(S).length}</b><span>${t("statS")}</span></div></div></section>
   <section class="section"><h2>${t("typesT")}</h2><p class="sub">${t("typesP")}</p><div class="tiles">${TYPES.map(ty=>`<a class="tile" href="#browse" data-type="${ty}"><span class="ic">${svg(ICON[ty])}</span><h3>${t("t_"+TK(ty))}</h3><p>${t("d_"+TK(ty))}</p><span class="n">${rows.filter(r=>r.type===ty).length} ${t("entries")}</span></a>`).join("")}</div></section>
   <section class="section"><h2>${t("keyT")}</h2><p class="sub">${t("keyP")}</p>${rowsTable(pick)}</section></div>`;
   bindSelector("hres");bindRows();
+  app.querySelectorAll(".quick button").forEach(b=>b.onclick=()=>{const sa=document.getElementById("sa"),sb=document.getElementById("sb");sa.value=b.dataset.a;sb.value=b.dataset.b;sa.dispatchEvent(new Event("change"));document.getElementById("hsec").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"})});
   app.querySelectorAll(".tile").forEach(a=>a.onclick=()=>{bs={q:"",type:a.dataset.type,s:"all"}});
  },
  check(){
@@ -182,13 +186,13 @@ const V={
   draw();
  },
  drugs(){
-  const ks=Object.keys(N).filter(k=>N[k][3]==="drug"||FLUIDS.includes(k)).sort((a,b)=>nm(a).localeCompare(nm(b)));
+  const ks=Object.keys(N).filter(k=>(N[k][3]==="drug"&&!HIDE.includes(k))||FLUIDS.includes(k)).sort((a,b)=>nm(a).localeCompare(nm(b)));
   app.innerHTML=`<div class="wrap page"><h1>${t("drugsT")}</h1><p class="sub">${t("drugsP")}</p>
    <div class="filters" style="grid-template-columns:minmax(0,1fr)"><div class="fld"><label for="dq">${t("search")}</label><input id="dq" type="search" placeholder="${t("filterPh")}"></div></div><div id="dl"></div></div>`;
   const draw=q=>{q=q.toLowerCase().trim();const list=ks.filter(k=>!q||N[k].slice(0,3).join(" ").toLowerCase().includes(q));
    document.getElementById("dl").innerHTML=`<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colName")}</th><th class="num">${t("colN")}</th><th class="num">${t("colI")}</th><th class="num">${t("colC")}</th><th></th></tr></thead><tbody>${
     list.length?list.map(k=>{const rs=rows.filter(r=>ov(r.a,k)||ov(r.b,k));const ni=rs.filter(r=>r.s==="I").length,nc=rs.filter(r=>r.s==="C").length;
-     return `<tr data-go="d-${k}"><td class="p">${esc(nm(k))}</td><td class="num">${rs.length}</td><td class="num">${ni?`<span class="pill I">${ni}</span>`:"–"}</td><td class="num">${nc?`<span class="pill C">${nc}</span>`:"–"}</td><td class="chev">›</td></tr>`}).join("")
+     return `<tr data-go="d-${k}"><td class="p">${esc(nm(k))}</td><td class="num" data-l="${t("colN")}">${rs.length}</td><td class="num" data-l="${t("colI")}">${ni?`<span class="pill I">${ni}</span>`:"–"}</td><td class="num" data-l="${t("colC")}">${nc?`<span class="pill C">${nc}</span>`:"–"}</td><td class="chev">›</td></tr>`}).join("")
     :`<tr class="empty-row"><td colspan="5">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;bindRows()};
   document.getElementById("dq").oninput=e=>draw(e.target.value);draw("");
  },
@@ -200,13 +204,14 @@ const V={
   app.innerHTML=`<div class="wrap page"><div class="crumb"><a href="#drugs">${t("navDrugs")}</a><span>›</span><span>${esc(nm(k))}</span></div>
    <h1>${esc(nm(k))}</h1>
    <div class="dsum">${sum.map(([s,n])=>`<span class="pill ${s}">${svg(SYMI[s],13)}${n} ${t("S_"+s)}</span>`).join("")}</div>
-   ${TYPES.map(ty=>{const gq=rs.filter(r=>r.type===ty);return gq.length?`<section class="section" style="padding-top:0;padding-bottom:28px"><h2 style="font-size:1.15rem;margin-bottom:12px">${t("t_"+TK(ty))}</h2>${rowsTable(gq,{hideA:k,match:true})}</section>`:""}).join("")}</div>`;
+   ${TYPES.map(ty=>{const gq=rs.filter(r=>r.type===ty);return gq.length?`<section class="section" style="padding-top:0;padding-bottom:28px"><h2 style="font-size:1.15rem;margin-bottom:12px">${t("t_"+TK(ty))}</h2>${rowsTable(gq,{hideA:k,match:true,noType:true})}</section>`:""}).join("")}</div>`;
   bindRows();
  },
  entry(i){
   const r=rows[+i];if(!r)return go("browse");
   const rel=rows.filter(x=>x!==r&&(x.a===r.a||x.b===r.a)).slice(0,8);
   app.innerHTML=`<div class="wrap page"><div class="crumb"><a href="#browse">${t("navBrowse")}</a><span>›</span><span>${esc(nm(r.a))} + ${esc(nm(r.b))}</span></div>
+   <h1 class="eh1">${esc(nm(r.a))} + ${esc(nm(r.b))}</h1>
    <div class="detail"><div>${verdict(r).replace(/<a class="vmore"[^>]*>[^<]*<\/a>/,"")}
      ${rel.length?`<section class="section" style="padding-bottom:0"><h2 style="font-size:1.15rem;margin-bottom:12px">${t("otherFor")} ${esc(nm(r.a))}</h2>${rowsTable(rel,{hideA:r.a})}</section>`:""}</div>
     <aside><div class="panel"><h3>${t("about")}</h3><dl>
@@ -226,6 +231,7 @@ function route(){
   const sec=h.startsWith("d-")?"drugs":h.startsWith("e-")?"browse":(V[h]?h:"home");
   document.querySelectorAll(".links a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+sec));
   if(h.startsWith("d-"))V.drug(h.slice(2));else if(h.startsWith("e-"))V.entry(h.slice(2));else(V[h]&&!["drug","entry"].includes(h)?V[h]:V.home)();
+  const h1=app.querySelector("h1");document.title=h1&&sec!=="home"?`${h1.textContent} · IV Compat`:"IV Compat";
   scrollTo(0,0);
 }
 function applyLang(){document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
