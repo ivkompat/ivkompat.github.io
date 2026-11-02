@@ -23,7 +23,7 @@ const T={
   colRes:"Result",colPair:"Combination",colType:"Type",colNote:"Details",
   drugsT:"Drugs and fluids A–Z",drugsP:"Select a drug to see every combination checked for it.",
   filterPh:"Filter by name",colName:"Name",colAlt:"Indonesian name",colN:"Entries",colI:"Incompatible",colC:"Compatible",
-  combined:"Combined with",aka:"Also searched as",
+  combined:"Combined with",reference:"Reference",sumAgree:"{n} references found. All say: {s}.",sumDisagree:"{n} references found and they differ ({s}). Use the most cautious result and check with the pharmacy.",rt_label:"Official drug label",rt_chart:"Hospital chart",rt_mfr:"Manufacturer testing",rt_study:"Indonesian study",aka:"Also searched as",
   home:"Home",about:"About this entry",type:"Type",result:"Result",checked:"Last checked",
   checkedDate:"2 November 2026",otherFor:"Other entries for",openDrug:"Open drug page",
   S_C:"Compatible",S_I:"Incompatible",S_K:"Conditional",S_N:"Not established",S_D:"Conflicting data",SD_D:"Sources disagree. Check with the pharmacy before giving together.",
@@ -51,7 +51,7 @@ const T={
   colRes:"Hasil",colPair:"Kombinasi",colType:"Jenis",colNote:"Keterangan",
   drugsT:"Obat dan cairan A–Z",drugsP:"Pilih obat untuk melihat semua kombinasi yang sudah diperiksa.",
   filterPh:"Saring nama",colName:"Nama",colAlt:"Nama Inggris",colN:"Data",colI:"Inkompatibel",colC:"Kompatibel",
-  combined:"Dikombinasikan dengan",aka:"Juga dicari sebagai",
+  combined:"Dikombinasikan dengan",reference:"Referensi",sumAgree:"{n} referensi ditemukan. Semua menyatakan: {s}.",sumDisagree:"{n} referensi ditemukan dan hasilnya berbeda ({s}). Gunakan hasil yang paling hati-hati dan konfirmasi dengan farmasi.",rt_label:"Label obat resmi",rt_chart:"Bagan rumah sakit",rt_mfr:"Uji produsen",rt_study:"Studi Indonesia",aka:"Juga dicari sebagai",
   home:"Beranda",about:"Tentang data ini",type:"Jenis",result:"Hasil",checked:"Terakhir diperiksa",
   checkedDate:"2 November 2026",otherFor:"Data lain untuk",openDrug:"Buka halaman obat",
   S_C:"Kompatibel",S_I:"Inkompatibel",S_K:"Bersyarat",S_N:"Belum terbukti",S_D:"Data bertentangan",SD_D:"Sumber saling bertentangan. Konfirmasi dengan farmasi sebelum diberikan bersama.",
@@ -82,17 +82,23 @@ let bs={q:"",type:"all",s:"all"};
 const pill=s=>`<span class="pill ${s}">${svg(SYMI[s],13)}${t("S_"+s)}</span>`;
 const srcOne=k=>S[k][1]?`<a href="${S[k][1]}" target="_blank" rel="noopener">${esc(S[k][0])}</a>`:esc(S[k][0]);
 const srcLinks=r=>r.src.map(srcOne).join("; ");
+const RTYPE=k=>k==="vch"?"chart":(k==="fkSmof"||k==="fkOmeg")?"mfr":(k==="ningrum"||k==="dwij")?"study":"label";
+const SHORT={vch:"VCH Y-site chart (2025)",fkSmof:"Fresenius Kabi SMOFlipid guide (2024)",fkOmeg:"Fresenius Kabi Omegaven guide (2024)",ningrum:"Ningrum et al., JIFFK 2024",dwij:"Dwijayanti et al., IJCP 2016"};
+const short=k=>SHORT[k]||S[k][0];
+const rbadge=k=>`<span class="rtype ${RTYPE(k)}">${t("rt_"+RTYPE(k))}</span>`;
+function refBlock(r){return `<div class="refbox"><div class="refh">${t("reference")}</div><ol>${r.src.map(k=>`<li>${rbadge(k)}<span class="rtext">${srcOne(k)}</span></li>`).join("")}</ol></div>`}
+const refCell=r=>r.src.map(k=>`<div class="rc">${rbadge(k)}<span>${esc(short(k))}</span></div>`).join("");
 function verdict(r){
   return `<article class="verdict"><div class="vband ${r.s}">${svg(SYMI[r.s],20)}${t("S_"+r.s)}</div>
   <div class="vbody"><p class="vpair">${esc(nm(r.a))} + ${esc(nm(r.b))}</p><a class="vmore" href="#e-${r.i}">${t("details")}</a>
   <p class="vtype">${t("t_"+TK(r.type))}: ${t("d_"+TK(r.type))}</p>
-  <p class="vnote">${esc(note(r))}</p><div class="vsrc">${t("source")}: ${srcLinks(r)}</div></div></article>`;
+  <p class="vnote">${esc(note(r))}</p></div>${refBlock(r)}</article>`;
 }
 function rowsTable(list,{hideA,match}={}){
-  return `<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colRes")}</th><th>${hideA?t("combined"):t("colPair")}</th><th>${t("colType")}</th><th>${t("colNote")}</th><th></th></tr></thead><tbody>${
+  return `<div class="tablebox"><div class="tscroll"><table class="data"><thead><tr><th>${t("colRes")}</th><th>${hideA?t("combined"):t("colPair")}</th><th>${t("colType")}</th><th>${t("colNote")}</th><th>${t("reference")}</th><th></th></tr></thead><tbody>${
    list.length?list.map(r=>{const otherK=hideA?((match?ov(r.a,hideA):r.a===hideA)?r.b:r.a):null;
-    return `<tr data-go="e-${r.i}"><td>${pill(r.s)}</td><td class="p">${hideA?esc(nm(otherK)):`${esc(nm(r.a))}<span class="x">+</span>${esc(nm(r.b))}`}</td><td class="m">${t("t_"+TK(r.type))}</td><td class="note">${esc(note(r))}</td><td class="chev">›</td></tr>`}).join("")
-   :`<tr class="empty-row"><td colspan="5">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;
+    return `<tr data-go="e-${r.i}"><td>${pill(r.s)}</td><td class="p">${hideA?esc(nm(otherK)):`${esc(nm(r.a))}<span class="x">+</span>${esc(nm(r.b))}`}</td><td class="m">${t("t_"+TK(r.type))}</td><td class="note">${esc(note(r))}</td><td class="refc">${refCell(r)}</td><td class="chev">›</td></tr>`}).join("")
+   :`<tr class="empty-row"><td colspan="6">${t("noRes")}</td></tr>`}</tbody></table></div></div>`;
 }
 function bindRows(root=app){root.querySelectorAll("tr[data-go]").forEach(tr=>tr.onclick=e=>{if(e.target.closest("a"))return;location.hash=tr.dataset.go})}
 
@@ -130,6 +136,8 @@ function renderPair(out){
   hint.textContent=`${nm(pair.a)} + ${nm(pair.b)}`;
   const {direct,general}=lookup(pair.a,pair.b);
   let h=`<p class="rgroup">${t("direct")}</p>`;
+  if(direct.length>1){const st=[...new Set(direct.map(r=>r.s))],refs=new Set(direct.flatMap(r=>r.src));
+    h+=`<div class="summary ${st.length===1?st[0]:"D"}">${st.length===1?t("sumAgree").replace("{n}",refs.size).replace("{s}",t("S_"+st[0])):t("sumDisagree").replace("{n}",refs.size).replace("{s}",st.map(x=>t("S_"+x)).join(", "))}</div>`}
   h+=direct.length?direct.map(verdict).join(""):`<div class="nodata"><b>${t("noPairT")}</b>${t("noPairP")}</div>`;
   if(general.length)h+=`<p class="rgroup">${t("general")}</p>`+general.map(verdict).join("");
   el.innerHTML=h;
@@ -158,10 +166,11 @@ const V={
   app.innerHTML=`<div class="wrap page"><h1>${t("browseT")}</h1><p class="sub">${t("browseP")}</p>
    <div class="filters"><div class="fld"><label for="bq">${t("search")}</label><input id="bq" type="search" placeholder="${t("searchPh")}" value="${esc(bs.q)}"></div>
    <div class="fld"><label for="bt">${t("typeL")}</label><select id="bt">${opt(TYPES.map(x=>[x,t("t_"+TK(x))]),bs.type)}</select></div>
-   <div class="fld"><label for="bsr">${t("resL")}</label><select id="bsr">${opt(["I","D","K","N","C"].map(x=>[x,t("S_"+x)]),bs.s)}</select></div></div>
+   <div class="fld"><label for="bsr">${t("resL")}</label><select id="bsr">${opt(["I","D","K","N","C"].map(x=>[x,t("S_"+x)]),bs.s)}</select></div>
+   <div class="fld"><label for="brf">${t("reference")}</label><select id="brf">${opt(["label","chart","mfr","study"].map(x=>[x,t("rt_"+x)]),bs.rf||"all")}</select></div></div>
    <p class="count" id="bc"></p><div id="bl"></div></div>`;
   const draw=()=>{const k=bs.q.toLowerCase().split(/[\s,+/]+/).filter(x=>x.length>1);
-   const h=rows.filter(r=>(bs.type==="all"||r.type===bs.type)&&(bs.s==="all"||r.s===bs.s)&&k.every(x=>r.hay.includes(x)));
+   const h=rows.filter(r=>(bs.type==="all"||r.type===bs.type)&&(bs.s==="all"||r.s===bs.s)&&(!bs.rf||bs.rf==="all"||r.src.some(x=>RTYPE(x)===bs.rf))&&k.every(x=>r.hay.includes(x)));
    document.getElementById("bc").textContent=t("count").replace("{n}",h.length).replace("{t}",rows.length);
    const show=h.slice(0,limit);document.getElementById("bl").innerHTML=rowsTable(show)+(h.length>limit?`<div style="text-align:center;margin-top:16px"><button class="btn-more" id="bmore" type="button">${t("more")} (${h.length-limit})</button></div>`:"");bindRows();
    const m=document.getElementById("bmore");if(m)m.onclick=()=>{limit+=100;draw()}};
@@ -169,6 +178,7 @@ const V={
   document.getElementById("bq").oninput=e=>{bs.q=e.target.value;limit=100;draw()};
   document.getElementById("bt").onchange=e=>{bs.type=e.target.value;limit=100;draw()};
   document.getElementById("bsr").onchange=e=>{bs.s=e.target.value;limit=100;draw()};
+  document.getElementById("brf").onchange=e=>{bs.rf=e.target.value;limit=100;draw()};
   draw();
  },
  drugs(){
@@ -204,7 +214,7 @@ const V={
      <dt>${t("type")}</dt><dd>${t("t_"+TK(r.type))}</dd>
      <dt>${t("checked")}</dt><dd>${t("checkedDate")}</dd></dl>
      <p style="margin-top:14px;color:var(--muted);font-size:.92rem">${t("SD_"+r.s)}</p></div>
-     <div class="panel"><h3>${t("sources")}</h3><ul>${r.src.map(k=>`<li>${srcOne(k)}</li>`).join("")}</ul></div>
+     <div class="panel"><h3>${t("reference")}</h3><ul class="reflist">${r.src.map(k=>`<li>${rbadge(k)}<div>${srcOne(k)}</div></li>`).join("")}</ul></div>
      <div class="panel"><ul style="list-style:none;padding:0">${[r.a,r.b].filter(k=>N[k][3]!=="other").map(k=>`<li><a href="#d-${k}">${t("openDrug")}: ${esc(nm(k))}</a></li>`).join("")}</ul></div></aside></div></div>`;
   bindRows();
  }

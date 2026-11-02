@@ -115,7 +115,7 @@ table.data{width:100%;border-collapse:collapse;min-width:640px}
 .empty-row td{text-align:center;color:var(--muted);padding:28px;cursor:default}
 
 /* Filters */
-.filters{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:12px;margin-bottom:14px}
+.filters{display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px}
 .count{color:var(--muted);font-size:.92rem;margin:0 0 10px}
 
 /* Detail pages */
@@ -170,3 +170,26 @@ table.data{width:100%;border-collapse:collapse;min-width:640px}
 .section[hidden] + .section{padding-top:44px}
 .btn-more{border:1px solid var(--brand);background:var(--surface);color:var(--brand);font-weight:700;padding:10px 22px;border-radius:8px;cursor:pointer}
 .btn-more:hover{background:var(--brand-tint)}
+
+/* References */
+.refbox{border-top:1px solid var(--line);background:#f8fafc;padding:14px 20px}
+.refh{font-size:.8rem;font-weight:800;color:var(--muted);margin-bottom:8px}
+.refbox ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.refbox li{font-size:.9rem;padding-left:4px}
+.refbox li::marker{color:var(--muted);font-weight:700}
+.rtext{margin-left:8px}
+.rtype{display:inline-block;font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:999px;white-space:nowrap;vertical-align:1px}
+.rtype.label{background:#e6effa;color:#0f4c81}
+.rtype.chart{background:#e6f4f1;color:#0d6b5c}
+.rtype.mfr{background:#f3ecfa;color:#5b3f91}
+.rtype.study{background:#fdf0dc;color:#8a5200}
+.data .refc{min-width:170px;max-width:220px}
+.rc{display:flex;flex-direction:column;gap:3px;font-size:.84rem;color:var(--muted);margin-bottom:8px}
+.rc:last-child{margin-bottom:0}
+.rc .rtype{align-self:flex-start}
+.reflist{list-style:none;padding:0}
+.reflist li{display:flex;flex-direction:column;gap:6px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--line-2);font-size:.92rem}
+.reflist li:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.reflist .rtype{align-self:flex-start}
+.summary{border-radius:var(--radius);padding:12px 16px;font-weight:700;border:1px solid var(--line);background:var(--surface)}
+.summary.I{border-color:#f0b4b4;background:var(--bad-bg);color:var(--bad)} .summary.C{border-color:#b6dfc6;background:var(--ok-bg);color:var(--ok)} .summary.K,.summary.D{border-color:#e9cf9a;background:var(--cond-bg);color:var(--cond)} .summary.N{background:var(--na-bg);color:var(--na)}
