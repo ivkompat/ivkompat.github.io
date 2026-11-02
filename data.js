@@ -1033,3 +1033,61 @@ window.ROWS.push(
 ["Diluent", "cefotax", "ns", "C", ["dwij"], "Dilution in 0.9% sodium chloride. Judged compatible in a hospital ICU study (package insert and Trissel's Handbook).", "Pengenceran dalam NaCl 0,9%. Dinilai kompatibel dalam studi ICU rumah sakit (brosur obat dan Trissel's Handbook)."]
 );
 window.ROWS.forEach(r=>{if(r[2]==="ns"&&["mero","panto","ondan"].includes(r[1])&&r[0]==="Diluent"&&!r[4].includes("dwij"))r[4].push("dwij")});
+
+// ---- Batch 4: more official labels (checked 2 Nov 2026) ----
+Object.assign(window.SOURCES,{
+  nicardL:["Nicardipine HCl Injection US label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=be9e2dda-80da-4e0d-a3ee-ab2bd9f3f2ee"],
+  norepiL:["Norepinephrine Bitartrate Injection US label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=256264b1-ddf6-42b7-8a09-194fffea65e2"],
+  dobutL:["Dobutamine Injection US label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=dc537761-d5f4-488d-24ab-b2bcd2b17b7a"],
+  amioL:["Amiodarone HCl Injection US label, Table 3 (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=545e9d26-0b4a-4784-b9c4-f8d62caf3a7c"],
+  propL:["Diprivan (propofol) US label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e3105799-a4b6-f3f4-e6e2-b2b29bbdb538"],
+  midazL:["Midazolam Injection US label (Pfizer)","https://labeling.pfizer.com/ShowLabeling.aspx?id=4529"],
+  furoL:["Furosemide Injection US label (Pfizer)","https://labeling.pfizer.com/ShowLabeling.aspx?id=4632"],
+  ofirL:["Ofirmev (acetaminophen) US label, sec. 2.5 (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9a38f63a-8852-6dab-e053-2a95a90a90d6"]
+});
+Object.assign(window.NAMES,{
+  nicard:["Nicardipine","Nikardipin","cardene nicardipine nikardipin perdipine","drug"],
+  amio:["Amiodarone","Amiodaron","cordarone nexterone amiodarone amiodaron tiaryt","drug"],
+  acetam:["Paracetamol (acetaminophen) IV","Parasetamol (asetaminofen) IV","ofirmev perfalgan paracetamol acetaminophen parasetamol asetaminofen","drug"],
+  digoxin:["Digoxin","Digoksin","lanoxin digoxin digoksin","drug"],
+  nitroprus:["Sodium nitroprusside","Natrium nitroprusid","nipride nitroprusside nitroprusid","drug"],
+  argatro:["Argatroban","Argatroban","argatroban","drug"],
+  bivali:["Bivalirudin","Bivalirudin","angiomax bivalirudin","drug"],
+  imipen:["Imipenem-cilastatin","Imipenem-silastatin","tienam primaxin imipenem cilastatin carbapenem karbapenem","drug"],
+  aminoph:["Aminophylline","Aminofilin","aminophylline aminofilin theophylline","drug"],
+  amoxclav:["Amoxicillin-clavulanate","Amoksisilin-klavulanat","augmentin amoxicillin amoksisilin clavulanate klavulanat","drug"],
+  ampisulb:["Ampicillin-sulbactam","Ampisilin-sulbaktam","unasyn ampicillin sulbactam ampisilin sulbaktam","drug"],
+  labeta:["Labetalol","Labetalol","trandate labetalol","drug"],
+  milri:["Milrinone","Milrinon","primacor milrinone milrinon","drug"]
+});
+window.ROWS.push(
+ ["Diluent","nicard","d5w","C",["nicardL"],"Compatible and stable for 24 hours at room temperature in glass or PVC containers.","Kompatibel dan stabil 24 jam pada suhu ruang dalam wadah kaca atau PVC."],
+ ["Diluent","nicard","ns","C",["nicardL"],"Compatible and stable for 24 hours at room temperature in glass or PVC containers.","Kompatibel dan stabil 24 jam pada suhu ruang dalam wadah kaca atau PVC."],
+ ["Diluent","nicard","lr","I",["nicardL"],"Not compatible with Lactated Ringer's.","Tidak kompatibel dengan Ringer laktat."],
+ ["Admixture","nicard","bicarb","I",["nicardL"],"Not compatible with 5% sodium bicarbonate injection.","Tidak kompatibel dengan injeksi natrium bikarbonat 5%."],
+ ["Diluent","norepi","d5w","C",["norepiL"],"Dilute in 5% dextrose or dextrose with sodium chloride; dextrose protects against loss of potency by oxidation.","Encerkan dalam dekstrosa 5% atau dekstrosa dengan NaCl; dekstrosa melindungi dari hilangnya potensi akibat oksidasi."],
+ ["Diluent","norepi","ns","K",["norepiL"],"Giving it in saline alone is not recommended; use a dextrose-containing fluid.","Pemberian dalam NaCl saja tidak dianjurkan; gunakan cairan yang mengandung dekstrosa."],
+ ["Y-site","norepi","blood","N",["norepiL"],"Give whole blood or plasma separately, for example through a Y-tube from individual containers.","Berikan darah atau plasma secara terpisah, misalnya melalui Y-tube dari wadah masing-masing."],
+ ["Diluent","dobut","d5w","C",["dobutL"],"Dilute to at least 50 mL with a listed IV solution, such as 5% dextrose.","Encerkan hingga minimal 50 mL dengan larutan IV yang tercantum, misalnya dekstrosa 5%."],
+ ["Diluent","dobut","ns","C",["dobutL"],"Dilute to at least 50 mL with a listed IV solution, such as 0.9% sodium chloride.","Encerkan hingga minimal 50 mL dengan larutan IV yang tercantum, misalnya NaCl 0,9%."],
+ ["Admixture","dobut","bicarb","I",["dobutL"],"Do not add to 5% sodium bicarbonate or any other strongly alkaline solution.","Jangan ditambahkan ke natrium bikarbonat 5% atau larutan basa kuat lainnya."],
+ ["Admixture","dobut","anyDrug","I",["dobutL"],"Not recommended to mix with other drugs in the same solution because of possible physical incompatibility.","Tidak dianjurkan dicampur dengan obat lain dalam larutan yang sama karena kemungkinan inkompatibilitas fisik."],
+ ["Diluent","amio","d5w","C",["amioL"],"Dilute in D5W. Infusions longer than 2 hours must be in glass or polyolefin containers; amiodarone adsorbs to PVC and leaches DEHP.","Encerkan dalam D5W. Infus lebih dari 2 jam harus dalam wadah kaca atau poliolefin; amiodaron terserap ke PVC dan melepaskan DEHP."],
+ ["Diluent","propofol","d5w","C",["propL"],"If dilution is needed, dilute only with 5% dextrose, to no less than 2 mg/mL.","Bila perlu diencerkan, hanya dengan dekstrosa 5%, tidak kurang dari 2 mg/mL."],
+ ["Y-site","propofol","lr","C",["propL"],"Compatible with Lactated Ringer's when given through a Y-type infusion set.","Kompatibel dengan Ringer laktat bila diberikan melalui set infus tipe Y."],
+ ["Admixture","propofol","anyDrug","I",["propL"],"Should not be mixed with other therapeutic agents before administration.","Tidak boleh dicampur dengan obat lain sebelum pemberian."],
+ ["Y-site","propofol","blood","N",["propL"],"Do not give through the same catheter as blood or plasma; compatibility not established.","Jangan diberikan melalui kateter yang sama dengan darah atau plasma; kompatibilitas belum terbukti."],
+ ["Diluent","midaz","d5w","C",["midazL"],"At 0.5 mg/mL, compatible for up to 24 hours.","Pada 0,5 mg/mL, kompatibel hingga 24 jam."],
+ ["Diluent","midaz","ns","C",["midazL"],"At 0.5 mg/mL, compatible for up to 24 hours.","Pada 0,5 mg/mL, kompatibel hingga 24 jam."],
+ ["Diluent","midaz","lr","K",["midazL"],"At 0.5 mg/mL, compatible for up to 4 hours only.","Pada 0,5 mg/mL, kompatibel hanya hingga 4 jam."],
+ ["Diluent","furo","ns","C",["furoL"],"For high-dose infusion; adjust pH above 5.5 first. Furosemide may precipitate below pH 7.","Untuk infus dosis tinggi; atur pH di atas 5,5 terlebih dahulu. Furosemid dapat mengendap di bawah pH 7."],
+ ["Diluent","furo","lr","C",["furoL"],"For high-dose infusion; adjust pH above 5.5 first.","Untuk infus dosis tinggi; atur pH di atas 5,5 terlebih dahulu."],
+ ["Diluent","furo","d5w","C",["furoL"],"For high-dose infusion; adjust pH above 5.5 first.","Untuk infus dosis tinggi; atur pH di atas 5,5 terlebih dahulu."],
+ ["Y-site","furo","labeta","I",["furoL"],"Acidic drug: do not give in the same infusion or add furosemide to a running line containing it.","Obat asam: jangan diberikan dalam infus yang sama atau menambahkan furosemid ke jalur yang berisi obat ini."],
+ ["Y-site","furo","cipro","I",["furoL"],"Acidic drug: do not give in the same infusion or add furosemide to a running line containing it.","Obat asam: jangan diberikan dalam infus yang sama atau menambahkan furosemid ke jalur yang berisi obat ini."],
+ ["Y-site","furo","milri","I",["furoL"],"Acidic drug: do not give in the same infusion or add furosemide to a running line containing it.","Obat asam: jangan diberikan dalam infus yang sama atau menambahkan furosemid ke jalur yang berisi obat ini."],
+ ["Admixture","acetam","anyDrug","I",["ofirL"],"Do not add other medications to the vial, solution or infusion device.","Jangan menambahkan obat lain ke vial, larutan, atau perangkat infus."],
+ ["Y-site","acetam","diaz","I",["ofirL"],"Physically incompatible; do not give at the same time.","Inkompatibel secara fisik; jangan diberikan bersamaan."],
+ ["Y-site","acetam","chlorpro","I",["ofirL"],"Physically incompatible; do not give at the same time.","Inkompatibel secara fisik; jangan diberikan bersamaan."]
+);
+[["aminoph","D5W or NS"],["amoxclav",""],["ampisulb","NS"],["argatro","D5W"],["bivali","D5W"],["cefaz","D5W"],["ceftaz","D5W"],["digoxin","D5W"],["furo","D5W (furosemide 10 mg/mL)"],["hep","D5W"],["imipen","D5W"],["mgso4","D5W (500 mg/mL)"],["mica","NS"],["piptazo","D5W"],["kphos","D5W"],["bicarb","D5W"],["nitroprus","D5W"],["naphos","D5W"]].forEach(([k,v])=>window.ROWS.push(["Y-site","amio",k,"I",["amioL"],"Forms a precipitate with amiodarone"+(v?" (tested in "+v+")":"")+". If both are needed, use separate IV lines.","Membentuk endapan dengan amiodaron"+(v?" (diuji dalam "+v.replace("or","atau")+")":"")+". Bila keduanya diperlukan, gunakan jalur IV terpisah."]));

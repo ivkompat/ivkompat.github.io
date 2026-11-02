@@ -62,7 +62,7 @@ const TYPES=["Diluent","Y-site","Admixture","Syringe"],TK=x=>x.replace("-","");
 const N=window.NAMES,S=window.SOURCES;
 const rows=window.ROWS.map(([type,a,b,s,src,en,id],i)=>({i,type,a,b,s,src,en,id,hay:(N[a].slice(0,3).join(" ")+" "+N[b].slice(0,3).join(" ")).toLowerCase()}));
 // Keys that also count as a broader item in the pair checker
-const GR={cagluc:["caSol","caIV"],genta:["aminog","amigent"],amika:["aminog","amigent"],mgso4:["mag"],ampi:["betalact"],cefaz:["betalact"],cefotax:["betalact"],ceftaz:["betalact"],cefurox:["betalact"],cloxa:["betalact"],peng:["betalact"],cefepime:["betalact"],chloride:["ns"],dexAll:["d5w"],d5_20:["d5w"],caDil:["lr","caSol"],caIV:["caSol"],ambisome:["amphoB"],tobra:["aminog"],amigent:["aminog"],
+const GR={imipen:["betalact"],amoxclav:["betalact"],ampisulb:["betalact"],cagluc:["caSol","caIV"],genta:["aminog","amigent"],amika:["aminog","amigent"],mgso4:["mag"],ampi:["betalact"],cefaz:["betalact"],cefotax:["betalact"],ceftaz:["betalact"],cefurox:["betalact"],cloxa:["betalact"],peng:["betalact"],cefepime:["betalact"],chloride:["ns"],dexAll:["d5w"],d5_20:["d5w"],caDil:["lr","caSol"],caIV:["caSol"],ambisome:["amphoB"],tobra:["aminog"],amigent:["aminog"],
   ceftri:["betalact"],piptazo:["betalact"],mero:["betalact"],erta:["betalact"]};
 const ov=(rowKey,sel)=>rowKey===sel||(GR[rowKey]||[]).includes(sel)||(GR[sel]||[]).includes(rowKey);
 const GENERAL=["anyDrug","anyPN","anyLine"];
