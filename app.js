@@ -261,7 +261,7 @@ function route(){
   const sec=h.startsWith("d-")?"drugs":h.startsWith("e-")?"browse":(V[h]?h:"home");
   document.querySelectorAll(".links a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+sec));
   if(h.startsWith("d-"))V.drug(h.slice(2));else if(h.startsWith("e-"))V.entry(h.slice(2));else(V[h]&&!["drug","entry"].includes(h)?V[h]:V.home)();
-  const h1=app.querySelector("h1");document.title=h1&&sec!=="home"?`${h1.textContent} · IV Compat`:"IV Compat";
+  const h1=app.querySelector("h1");document.title=h1&&sec!=="home"?`${h1.textContent} · IVKompat`:"IVKompat · IV compatibility reference";
   scrollTo(0,0);
 }
 function applyLang(){document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));

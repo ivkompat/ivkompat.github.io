@@ -1,4 +1,4 @@
-# IV Compat
+# IVKompat
 
 IV compatibility reference (English / Bahasa Indonesia).
 

@@ -252,3 +252,39 @@ main{flex:1 0 auto}
 .quick-light button{border:1px solid var(--line);background:var(--surface);color:var(--brand);font-weight:600}
 .quick-light button:hover{background:var(--brand-tint);border-color:var(--brand)}
 @media (max-width:760px){.foot-top{flex-direction:column;gap:18px;padding-block:28px 20px}}
+
+/* ===== Theme A: Clinical teal (IVKompat) ===== */
+:root{--bg:#F3F8F8;--surface:#fff;--fg:#0E2A2E;--muted:#4F6669;--line:#D6E4E5;--line-2:#E8F0F1;
+  --brand:#0B5C66;--brand-d:#08464E;--brand-tint:#E0F0F1;--mint:#EAF4F4;
+  --bad:#D64545;--bad-bg:#FCEAEA;--ok:#13795B;--ok-bg:#E2F4EC}
+.nav{background:var(--brand);border-bottom:0;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.brand{color:#fff;font-weight:700;letter-spacing:-.01em;gap:9px}
+.brand b{font-weight:800;color:#9FE3E0}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:#fff;color:var(--brand);display:grid;place-items:center;flex-shrink:0}
+.links a{color:#CFE7E8}
+.links a:hover{color:#fff;background:rgba(255,255,255,.10)}
+.links a.on{color:#fff;background:rgba(255,255,255,.18)}
+.lang{border-color:rgba(255,255,255,.35)}
+.lang button{color:#CFE7E8}
+.lang button.on{background:#fff;color:var(--brand)}
+.burger span{background:#fff}
+.hero{background:var(--mint);color:var(--fg);border-bottom:1px solid var(--line)}
+.hero h1{color:var(--brand-d)}
+.hero p{color:var(--muted)}
+.selector{box-shadow:0 10px 30px rgba(11,92,102,.12);border:1px solid var(--line)}
+.quick{color:var(--muted)}
+.quick button{border:1px solid var(--line);background:#fff;color:var(--brand);font-weight:600}
+.quick button:hover{background:var(--brand-tint);border-color:var(--brand)}
+.vband.I{background:#D64545}
+.foot{background:#06363C;color:#B7D3D5}
+.brand.light{color:#fff}
+.foot-nav a{color:#E3F2F2}
+.foot-bottom{color:#8FB3B6;border-top-color:rgba(255,255,255,.12)}
+.stat b{color:var(--brand)}
+.tile .ic{background:var(--brand-tint);color:var(--brand)}
+.rtype.label{background:#E0F0F1;color:#0B5C66}
+.rtype.chart{background:#E6F1FB;color:#185FA5}
+@media (max-width:760px){
+  .links{background:var(--brand-d);border-bottom:0}
+  .links a{border-bottom-color:rgba(255,255,255,.08)}
+}
