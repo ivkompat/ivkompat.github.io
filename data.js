@@ -1091,3 +1091,80 @@ window.ROWS.push(
  ["Y-site","acetam","chlorpro","I",["ofirL"],"Physically incompatible; do not give at the same time.","Inkompatibel secara fisik; jangan diberikan bersamaan."]
 );
 [["aminoph","D5W or NS"],["amoxclav",""],["ampisulb","NS"],["argatro","D5W"],["bivali","D5W"],["cefaz","D5W"],["ceftaz","D5W"],["digoxin","D5W"],["furo","D5W (furosemide 10 mg/mL)"],["hep","D5W"],["imipen","D5W"],["mgso4","D5W (500 mg/mL)"],["mica","NS"],["piptazo","D5W"],["kphos","D5W"],["bicarb","D5W"],["nitroprus","D5W"],["naphos","D5W"]].forEach(([k,v])=>window.ROWS.push(["Y-site","amio",k,"I",["amioL"],"Forms a precipitate with amiodarone"+(v?" (tested in "+v+")":"")+". If both are needed, use separate IV lines.","Membentuk endapan dengan amiodaron"+(v?" (diuji dalam "+v.replace("or","atau")+")":"")+". Bila keduanya diperlukan, gunakan jalur IV terpisah."]));
+
+// ---- Batch 5: more labels + UCLA pip-tazo list (checked 2 Nov 2026) ----
+Object.assign(window.SOURCES,{
+  cefepL:["Cefepime for Injection US label, sec. 2.6 (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e80c27e2-164d-4836-ba24-c160d75dc5d3"],
+  ceftazL:["Ceftazidime for Injection US label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=112c5457-8d71-49f5-b531-9761d7d38c93&type=display"],
+  clindaL:["Cleocin Phosphate (clindamycin) US label (Pfizer)","https://labeling.pfizer.com/ShowLabeling.aspx?id=12720"],
+  caglucL:["Calcium Gluconate Injection US label, sec. 2.1 and 2.5 (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=787603c6-3f50-473a-8e3b-71dcf6d86964"],
+  metocloL:["Metoclopramide Injection US label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=373ba08b-33ad-49fc-28a7-928e89a65314"],
+  azithroL:["Zithromax IV (azithromycin) US label (Pfizer)","https://www.pfizermedical.com/zithromax-iv/dosage-admin"],
+  metroL:["Metronidazole Injection US label (Pfizer)","https://labeling.pfizer.com/ShowLabeling.aspx?id=4524"],
+  gentaL:["Gentamicin Sulfate Injection US label (Pfizer)","https://labeling.pfizer.com/ShowLabeling.aspx?id=4470"],
+  mgso4L:["Magnesium Sulfate Injection US label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c255b8a9-68da-49c1-897b-bc18b731e459"],
+  insulinL:["Humulin R (insulin human) US label, sec. 2.2 (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b519bd83-038c-4ec5-a231-a51ec5cc291f"],
+  esomepL:["Esomeprazole Sodium for Injection US label, sec. 2.4–2.5 (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=9354958c-e997-41c8-8605-23f0a58993c0&type=display"],
+  ucla:["UCLA Health Antimicrobial Stewardship, IV (Y-site) Drug-Incompatibility Data: piperacillin-tazobactam (adapted from Trissel's Handbook, 16th ed.)","https://asp.mednet.ucla.edu/asp/files/view/Incompatibility_Chart.pdf"]
+});
+Object.assign(window.NAMES,{
+  azithro:["Azithromycin","Azitromisin","zithromax azithromycin azitromisin macrolide","drug"],
+  minocyc:["Minocycline","Minosiklin","minocin minocycline minosiklin","drug"],
+  halo:["Haloperidol","Haloperidol","haldol haloperidol","drug"],
+  nalbu:["Nalbuphine","Nalbufin","nubain nalbuphine nalbufin","drug"],
+  prochlor:["Prochlorperazine","Proklorperazin","stemetil prochlorperazine proklorperazin","drug"],
+  doxy:["Doxycycline","Doksisiklin","doxycycline doksisiklin","drug"],
+  drope:["Droperidol","Droperidol","droperidol","drug"],
+  ganci:["Ganciclovir","Gansiklovir","cymevene ganciclovir gansiklovir","drug"],
+  cispl:["Cisplatin","Sisplatin","cisplatin sisplatin","drug"],
+  dauno:["Daunorubicin","Daunorubisin","daunorubicin daunorubisin","drug"],
+  dacarb:["Dacarbazine","Dakarbazin","dacarbazine dakarbazin dtic","drug"],
+  doxo:["Doxorubicin","Doksorubisin","adriamycin doxorubicin doksorubisin","drug"],
+  gemci:["Gemcitabine","Gemsitabin","gemzar gemcitabine gemsitabin","drug"],
+  idaru:["Idarubicin","Idarubisin","idarubicin idarubisin","drug"],
+  mitomy:["Mitomycin","Mitomisin","mitomycin mitomisin","drug"],
+  mitox:["Mitoxantrone","Mitoksantron","mitoxantrone mitoksantron","drug"],
+  strepto:["Streptozocin","Streptozosin","zanosar streptozocin streptozosin","drug"]
+});
+(()=>{const P=(...a)=>window.ROWS.push(a);
+ const C24="Compatible at 1–40 mg/mL with this infusion fluid.",C24i="Kompatibel pada 1–40 mg/mL dengan cairan infus ini.";
+ P("Diluent","cefepime","ns","C",["cefepL"],C24,C24i);P("Diluent","cefepime","d5w","C",["cefepL"],C24,C24i);
+ ["metro","vanco","genta","tobra","aminoph"].forEach(k=>P("Admixture","cefepime",k,"I",["cefepL"],"Do not add cefepime solution to this drug because of potential interaction. Each can be given separately.","Jangan menambahkan larutan sefepim ke obat ini karena potensi interaksi. Masing-masing dapat diberikan terpisah."));
+ P("Admixture","cefepime","ampi","K",["cefepL"],"Do not add to ampicillin solutions stronger than 40 mg/mL.","Jangan ditambahkan ke larutan ampisilin dengan kadar lebih dari 40 mg/mL.");
+ P("Diluent","ceftaz","ns","C",["ceftazL"],"Listed as a compatible IV infusion fluid.","Tercantum sebagai cairan infus IV yang kompatibel.");
+ P("Diluent","ceftaz","d5w","C",["ceftazL"],"Listed as a compatible IV infusion fluid.","Tercantum sebagai cairan infus IV yang kompatibel.");
+ P("Diluent","ceftaz","bicarb","K",["ceftazL"],"Less stable in sodium bicarbonate injection; not recommended as a diluent.","Kurang stabil dalam injeksi natrium bikarbonat; tidak dianjurkan sebagai pelarut.");
+ P("Admixture","ceftaz","vanco","I",["ceftazL"],"Physically incompatible when mixed; give the two by separate intermittent infusion.","Inkompatibel secara fisik bila dicampur; berikan terpisah dengan infus intermiten.");
+ P("Admixture","ceftaz","aminog","I",["ceftazL"],"Do not add to aminoglycoside solutions because of potential interaction; give separately.","Jangan ditambahkan ke larutan aminoglikosida karena potensi interaksi; berikan terpisah.");
+ P("Diluent","clinda","ns","C",["clindaL"],"No inactivation or incompatibility in sodium chloride solutions.","Tidak ada inaktivasi atau inkompatibilitas dalam larutan natrium klorida.");
+ P("Diluent","clinda","d5w","C",["clindaL"],"No inactivation or incompatibility in glucose solutions.","Tidak ada inaktivasi atau inkompatibilitas dalam larutan glukosa.");
+ ["ampi","phenytoin","aminoph","cagluc","mgso4"].forEach(k=>P("Admixture","clinda",k,"I",["clindaL"],"Physically incompatible with clindamycin phosphate.","Inkompatibel secara fisik dengan klindamisin fosfat."));
+ P("Diluent","cagluc","d5w","C",["caglucL"],"Dilute before use in 5% dextrose or normal saline.","Encerkan sebelum digunakan dalam dekstrosa 5% atau NaCl 0,9%.");
+ P("Diluent","cagluc","ns","C",["caglucL"],"Dilute before use in 5% dextrose or normal saline.","Encerkan sebelum digunakan dalam dekstrosa 5% atau NaCl 0,9%.");
+ P("Admixture","cagluc","ceftri","I",["caglucL"],"Do not mix. Do not give simultaneously via Y-site at any age; contraindicated in neonates. After 28 days of age, may be given one after the other with a thorough line flush.","Jangan dicampur. Jangan diberikan bersamaan melalui Y-site pada usia berapa pun; kontraindikasi pada neonatus. Setelah usia 28 hari, boleh bergantian dengan pembilasan jalur yang baik.");
+ ["bicarb","kphos","naphos"].forEach(k=>P("Admixture","cagluc",k,"I",["caglucL"],"Do not mix with fluids containing bicarbonate or phosphate; a precipitate may form.","Jangan dicampur dengan cairan yang mengandung bikarbonat atau fosfat; dapat terbentuk endapan."));
+ P("Admixture","cagluc","minocyc","I",["caglucL"],"Do not mix; calcium binds minocycline and makes it inactive.","Jangan dicampur; kalsium mengikat minosiklin sehingga tidak aktif.");
+ P("Diluent","metoclo","ns","C",["metocloL"],"Preferred diluent. Store up to 48 hours protected from light.","Pelarut yang dianjurkan. Simpan hingga 48 jam terlindung dari cahaya.");
+ P("Diluent","metoclo","d5w","C",["metocloL"],"Can be stored up to 48 hours protected from light. Degrades if admixed in D5W and frozen.","Dapat disimpan hingga 48 jam terlindung dari cahaya. Terurai bila dicampur dalam D5W lalu dibekukan.");
+ P("Diluent","metoclo","lr","C",["metocloL"],"Can be stored up to 48 hours protected from light.","Dapat disimpan hingga 48 jam terlindung dari cahaya.");
+ P("Admixture","metoclo","bicarb","I",["metocloL"],"Listed as incompatible: do not mix.","Tercantum inkompatibel: jangan dicampur.");
+ ["ns","d5w","lr"].forEach(k=>P("Diluent","azithro",k,"C",["azithroL"],"Listed as a compatible diluent.","Tercantum sebagai pelarut yang kompatibel."));
+ P("Y-site","azithro","anyLine","I",["azithroL"],"Do not add other drugs or infuse them simultaneously through the same IV line.","Jangan menambahkan obat lain atau menginfus bersamaan melalui jalur IV yang sama.");
+ P("Admixture","metro","anyDrug","I",["metroL"],"Avoid admixtures with other drugs. Ready to use; do not use aluminium needles or equipment, and do not refrigerate.","Hindari pencampuran dengan obat lain. Siap pakai; jangan gunakan jarum atau alat dari aluminium, dan jangan disimpan di lemari pendingin.");
+ P("Diluent","genta","ns","C",["gentaL"],"May be diluted in 50–200 mL of isotonic saline.","Dapat diencerkan dalam 50–200 mL salin isotonik.");
+ P("Diluent","genta","d5w","C",["gentaL"],"May be diluted in 50–200 mL of 5% dextrose.","Dapat diencerkan dalam 50–200 mL dekstrosa 5%.");
+ P("Admixture","genta","anyDrug","I",["gentaL"],"Do not physically premix with other drugs; give separately.","Jangan dicampur dengan obat lain; berikan terpisah.");
+ P("Diluent","mgso4","d5w","C",["mgso4L"],"Commonly used diluent.","Pelarut yang umum digunakan.");
+ P("Diluent","mgso4","ns","C",["mgso4L"],"Commonly used diluent.","Pelarut yang umum digunakan.");
+ ["bicarb","kphos","naphos","cagluc"].forEach(k=>P("Admixture","mgso4",k,"I",["mgso4L"],"May form a precipitate when mixed; risk depends on concentrations.","Dapat membentuk endapan bila dicampur; risiko tergantung konsentrasi."));
+ P("Diluent","insulin","ns","C",["insulinL"],"IV only under medical supervision, at 0.1–1 unit/mL in 0.9% NaCl. Stable 48 hours refrigerated, then up to 48 hours at room temperature.","IV hanya di bawah pengawasan medis, 0,1–1 unit/mL dalam NaCl 0,9%. Stabil 48 jam di lemari pendingin, lalu hingga 48 jam pada suhu ruang.");
+ P("Diluent","esomep","ns","C",["esomepL"],"Esomeprazole: give within 12 hours of dilution.","Esomeprazol: berikan dalam 12 jam setelah diencerkan.");
+ P("Diluent","esomep","lr","C",["esomepL"],"Esomeprazole: give within 12 hours of dilution.","Esomeprazol: berikan dalam 12 jam setelah diencerkan.");
+ P("Diluent","esomep","d5w","K",["esomepL"],"Esomeprazole: give within 6 hours of dilution (shorter than NS or LR).","Esomeprazol: berikan dalam 6 jam setelah diencerkan (lebih singkat dari NaCl atau RL).");
+ P("Y-site","esomep","anyLine","I",["esomepL"],"Do not give at the same time as other medications. Flush the line with NS before and after.","Jangan diberikan bersamaan dengan obat lain. Bilas jalur dengan NaCl sebelum dan sesudah.");
+ const U="Y-site incompatible with piperacillin-tazobactam. Use a separate line or flush between drugs.",Ui="Inkompatibel melalui Y-site dengan piperasilin-tazobaktam. Gunakan jalur terpisah atau bilas di antara obat.";
+ ["acyclo","amio","amphoB","caspo","chlorpro","cispl","dauno","dacarb","dobut","doxo","doxy","drope","famo","ganci","gemci","halo","hydrox","idaru","mitomy","mitox","nalbu","prochlor","prometh","strepto"].forEach(k=>P("Y-site","piptazo",k,"I",["ucla"],U,Ui));
+ ["tobra","cisatra"].forEach(k=>P("Y-site","piptazo",k,"K",["ucla"],"Variable compatibility; depends on concentration. Check with pharmacy.","Kompatibilitas bervariasi; tergantung konsentrasi. Konfirmasi dengan farmasi."));
+ P("Y-site","piptazo","vanco","K",["ucla"],"Depends on concentration and formulation. Avoid running through the same lumen at the same time; use separate lumens or give vancomycin first.","Tergantung konsentrasi dan formulasi. Hindari dialirkan bersamaan di lumen yang sama; gunakan lumen terpisah atau berikan vankomisin terlebih dahulu.");
+ ["ns","d5w","lr"].forEach(k=>P("Y-site","piptazo",k,"C",["ucla"],"Compatible as a running Y-site infusion fluid. Note: some piperacillin-tazobactam labels say not to dilute in Lactated Ringer's.","Kompatibel sebagai cairan infus melalui Y-site. Catatan: beberapa label piperasilin-tazobaktam melarang pengenceran dalam Ringer laktat."));
+})();
