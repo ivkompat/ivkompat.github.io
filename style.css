@@ -65,7 +65,7 @@ button,select,input{font:inherit;color:inherit}
 .rgroup{font-size:.95rem;font-weight:700;color:var(--muted);margin:10px 0 0}
 .verdict{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
 .vband{display:flex;align-items:center;gap:10px;padding:12px 20px;font-weight:800;font-size:1.05rem}
-.vband.I{background:var(--bad);color:#fff} .vband.C{background:var(--ok);color:#fff} .vband.K{background:#b97a0a;color:#fff} .vband.N{background:var(--na);color:#fff}
+.vband.I{background:var(--bad);color:#fff} .vband.C{background:var(--ok);color:#fff} .vband.K{background:#b97a0a;color:#fff} .vband.N{background:var(--na);color:#fff} .vband.D{background:#6b4fa0;color:#fff}
 .vbody{padding:18px 20px;display:grid;grid-template-columns:1fr auto;gap:6px 20px}
 .vbody > *{min-width:0}
 .vpair{grid-column:1;font-size:1.15rem;font-weight:700;margin:0}
@@ -78,7 +78,7 @@ button,select,input{font:inherit;color:inherit}
 
 /* Status pill */
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap}
-.pill.I{color:var(--bad);background:var(--bad-bg)} .pill.C{color:var(--ok);background:var(--ok-bg)} .pill.K{color:var(--cond);background:var(--cond-bg)} .pill.N{color:var(--na);background:var(--na-bg)}
+.pill.I{color:var(--bad);background:var(--bad-bg)} .pill.C{color:var(--ok);background:var(--ok-bg)} .pill.K{color:var(--cond);background:var(--cond-bg)} .pill.N{color:var(--na);background:var(--na-bg)} .pill.D{color:#5b3f91;background:#efe9f8}
 
 /* Stats strip */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
@@ -168,3 +168,5 @@ table.data{width:100%;border-collapse:collapse;min-width:640px}
   .foot nav a{margin:0 18px 0 0}
 }
 .section[hidden] + .section{padding-top:44px}
+.btn-more{border:1px solid var(--brand);background:var(--surface);color:var(--brand);font-weight:700;padding:10px 22px;border-radius:8px;cursor:pointer}
+.btn-more:hover{background:var(--brand-tint)}
