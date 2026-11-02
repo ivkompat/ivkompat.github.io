@@ -2,7 +2,7 @@
 
 IV compatibility reference (English / Bahasa Indonesia).
 
-Live site: https://ranatalha4.github.io/iv-compat/
+Live site: https://ranatalha4.github.io/ivkompa/
 
 - Pair checker with type-to-search for drugs and IV fluids
 - Every result shows its reference: official drug labels, hospital compatibility charts, manufacturer testing and clinical studies

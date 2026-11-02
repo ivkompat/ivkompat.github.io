@@ -88,7 +88,7 @@ const RTYPE=k=>(k==="vch"||k==="ucla")?"chart":(k==="fkSmof"||k==="fkOmeg")?"mfr
 const SHORT={vch:"VCH Y-site chart (2025)",ucla:"UCLA Health pip-tazo Y-site list",fkSmof:"Fresenius Kabi SMOFlipid guide (2024)",fkOmeg:"Fresenius Kabi Omegaven guide (2024)",ningrum:"Ningrum et al., JIFFK 2024",dwij:"Dwijayanti et al., IJCP 2016"};
 const short=k=>SHORT[k]||S[k][0];
 const rbadge=k=>`<span class="rtype ${RTYPE(k)}">${t("rt_"+RTYPE(k))}</span>`;
-const REPO="https://github.com/ranatalha4/iv-compat/issues/new";
+const REPO="https://github.com/ranatalha4/ivkompa/issues/new";
 function reportURL(r){const title=`Entry #${r.i}: ${N[r.a][0]} + ${N[r.b][0]}`;
   const body=`**Entry:** #${r.i}\n**Combination:** ${N[r.a][0]} + ${N[r.b][0]}\n**Type:** ${r.type}\n**Current result:** ${T.en["S_"+r.s]}\n**References:** ${r.src.map(k=>S[k][0]).join("; ")}\n\n**What is wrong?**\n\n\n**Correct information and its source (label, reference book, study):**\n\n`;
   return `${REPO}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`}
